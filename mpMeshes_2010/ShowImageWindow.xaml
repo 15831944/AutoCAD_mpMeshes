@@ -1,0 +1,34 @@
+﻿<controls:MetroWindow x:Class="mpMeshes.ShowImageWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      mc:Ignorable="d" 
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                      SizeToContent="WidthAndHeight"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      ShowCloseButton="True" ShowIconOnTitleBar="False" ShowInTaskbar="False"
+                      ShowMaxRestoreButton="False" ShowMinButton="False"
+                      ShowTitleBar="False"
+                      WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+                      MouseLeftButtonDown="ShowImageWindow_OnMouseLeftButtonDown"
+                      >
+    <av:Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="BtStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource SquareMetroButton}">
+                <Setter Property="BorderThickness" Value="1" />
+            </Style>
+        </ResourceDictionary>
+    </av:Window.Resources>
+    <Grid Margin="2">
+        <Image Name="Img" Stretch="None" Margin="0,30,0,0"></Image>
+    </Grid>
+</controls:MetroWindow>
