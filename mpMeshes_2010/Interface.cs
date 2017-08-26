@@ -1,24 +1,31 @@
-﻿using mpPInterface;
+﻿using System.Collections.Generic;
+using ModPlusAPI.Interfaces;
 
 namespace mpMeshes
 {
-    public class Interface : IPluginInterface
+    public class Interface : IModPlusFunctionInterface
     {
-        private const string _Name = "mpMeshes";
-        private const string _AvailCad = "2010";
-        private const string _LName = "Сетки";
-        private const string _Description = "Подбор и расчет массы арматурных сеток согласно нормативных документов";
-        private const string _Author = "Пекшев Александр aka Modis";
-        private const string _Price = "0";
-        public string Name { get { return _Name; } }
-        public string AvailCad { get { return _AvailCad; } }
-        public string LName { get { return _LName; } }
-        public string Description { get { return _Description; } }
-        public string Author { get { return _Author; } }
-        public string Price { get { return _Price; } }
+        public SupportedProduct SupportedProduct => SupportedProduct.AutoCAD;
+        public string Name => "mpMeshes";
+        public string AvailProductExternalVersion => "2010";
+        public string ClassName => string.Empty;
+        public string LName => "Сетки";
+        public string Description => "Подбор и расчет массы арматурных сеток согласно нормативных документов";
+        public string Author => "Пекшев Александр aka Modis";
+        public string Price => "0";
+        public bool CanAddToRibbon => true;
+        public string FullDescription => string.Empty;
+        public string ToolTipHelpImage => string.Empty;
+        public List<string> SubFunctionsNames => new List<string>();
+        public List<string> SubFunctionsLames => new List<string>();
+        public List<string> SubDescriptions => new List<string>();
+        public List<string> SubFullDescriptions => new List<string>();
+        public List<string> SubHelpImages => new List<string>();
+        public List<string> SubClassNames => new List<string>();
     }
-    public class VersionData
+
+    public static class VersionData
     {
-        public const string FuncVersion = "2010";
+        public static string FuncVersion = "2010";
     }
 }

@@ -13,32 +13,26 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Autodesk.AutoCAD.Internal;
 using Autodesk.AutoCAD.Runtime;
-using mpMsg;
-using mpSettings;
-using ModPlus;
+using ModPlusAPI;
+using ModPlusAPI.Windows;
+using ModPlusAPI.Windows.Helpers;
 using Exception = System.Exception;
+using Variables = ModPlusAPI.Variables;
 
 namespace mpMeshes
 {
-    /// <summary>
-    /// Логика взаимодействия для MpMeshes.xaml
-    /// </summary>
     public partial class MpMeshes
     {
+        private double _ep = 0.001;
         /// <summary>
         /// Инициализация окна
         /// </summary>
         public MpMeshes()
         {
             InitializeComponent();
-            MpWindowHelpers.OnWindowStartUp(
-                this,
-                MpSettings.GetValue("Settings", "MainSet", "Theme"),
-                MpSettings.GetValue("Settings", "MainSet", "AccentColor"),
-                MpSettings.GetValue("Settings", "MainSet", "BordersType")
-                );
+            this.OnWindowStartUp();
             //
-            this.LabelName.Content = "Сетки арматурные сварные для железобетонных конструкций и изделий";
+            LabelName.Content = "Сетки арматурные сварные для железобетонных конструкций и изделий";
             // Заполняем значения первой вкладки
             FillFirstTab();
             // second
@@ -49,17 +43,17 @@ namespace mpMeshes
         #region MainWindow
         private void TabItem_GotFocus(object sender, RoutedEventArgs e)
         {
-            this.LabelName.Content = "Сетки арматурные сварные для железобетонных конструкций и изделий";
+            LabelName.Content = "Сетки арматурные сварные для железобетонных конструкций и изделий";
         }
 
         private void TabItem_GotFocus_1(object sender, RoutedEventArgs e)
         {
-            this.LabelName.Content = "Сетки сварные для железобетонных конструкций";
+            LabelName.Content = "Сетки сварные для железобетонных конструкций";
         }
 
         private void TabItem_GotFocus_2(object sender, RoutedEventArgs e)
         {
-            this.LabelName.Content = "Выпуск 1. Сетки с рабочей арматурой диаметром от 10 до 32 мм";
+            LabelName.Content = "Выпуск 1. Сетки с рабочей арматурой диаметром от 10 до 32 мм";
         }
 
         private void Window_MouseLeave(object sender, MouseEventArgs e)
@@ -69,7 +63,7 @@ namespace mpMeshes
 
         private void Window_MouseEnter(object sender, MouseEventArgs e)
         {
-            this.Focus();
+            Focus();
         }
         // Запрет нажатия пробела в текстовом поле
         public void TbNoSpace_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -119,119 +113,119 @@ namespace mpMeshes
             // Обозначаем вид сетки и требуемые ограничения
             if (e.AddedItems[0].Equals("1"))
             {
-                this.ChFirstRoll.IsChecked = false;
-                this.ChFirstRoll.Visibility = Visibility.Collapsed;
-                this.MeshKind.Text = "Вид сетки: Тяжелые";
+                ChFirstRoll.IsChecked = false;
+                ChFirstRoll.Visibility = Visibility.Collapsed;
+                MeshKind.Text = "Вид сетки: Тяжелые";
                 _minWidthLimit = 650; _maxWidthLimit = 3050;
-                this.FirstWidthLimit.Text = "(От 650 до 3050)";
+                FirstWidthLimit.Text = "(От 650 до 3050)";
                 _minLengthLimit = 850; _maxLengthLimit = 9000;
-                this.FirstLengthLimit.Text = "(От 850 до 9000)";
-                FillComboBoxWithStringList(this.CbFirstLongitudinal, _firstArmature.GetRange(6, 11));
-                FillComboBoxWithStringList(this.CbFirstTransverse, _firstArmature.GetRange(3, 6));
-                FillComboBoxWithStringList(this.CbFirstLongitudinalStep, new List<string> { "200" });
-                FillComboBoxWithStringList(this.CbFirstTransverseStep, new List<string> { "600" });
-                this.TbFirstTransverseOutput.Text = "25";
-                this.TbFirstLongitudinalOutput.Text = "25";
+                FirstLengthLimit.Text = "(От 850 до 9000)";
+                FillComboBoxWithStringList(CbFirstLongitudinal, _firstArmature.GetRange(6, 11));
+                FillComboBoxWithStringList(CbFirstTransverse, _firstArmature.GetRange(3, 6));
+                FillComboBoxWithStringList(CbFirstLongitudinalStep, new List<string> { "200" });
+                FillComboBoxWithStringList(CbFirstTransverseStep, new List<string> { "600" });
+                TbFirstTransverseOutput.Text = "25";
+                TbFirstLongitudinalOutput.Text = "25";
             }
             else if (e.AddedItems[0].Equals("2"))
             {
-                this.ChFirstRoll.IsChecked = false;
-                this.ChFirstRoll.Visibility = Visibility.Collapsed;
-                this.MeshKind.Text = "Вид сетки: Тяжелые";
+                ChFirstRoll.IsChecked = false;
+                ChFirstRoll.Visibility = Visibility.Collapsed;
+                MeshKind.Text = "Вид сетки: Тяжелые";
                 _minWidthLimit = 650; _maxWidthLimit = 3050;
-                this.FirstWidthLimit.Text = "(От 650 до 3050)";
+                FirstWidthLimit.Text = "(От 650 до 3050)";
                 _minLengthLimit = 850; _maxLengthLimit = 5950;
-                this.FirstLengthLimit.Text = "(От 850 до 5950)";
-                FillComboBoxWithStringList(this.CbFirstLongitudinal, _firstArmature.GetRange(6, 7));
-                FillComboBoxWithStringList(this.CbFirstTransverse, _firstArmature.GetRange(3, 6));
-                FillComboBoxWithStringList(this.CbFirstLongitudinalStep, new List<string> { "200" });
-                FillComboBoxWithStringList(this.CbFirstTransverseStep, new List<string> { "200" });
-                this.TbFirstTransverseOutput.Text = "25";
-                this.TbFirstLongitudinalOutput.Text = "25";
+                FirstLengthLimit.Text = "(От 850 до 5950)";
+                FillComboBoxWithStringList(CbFirstLongitudinal, _firstArmature.GetRange(6, 7));
+                FillComboBoxWithStringList(CbFirstTransverse, _firstArmature.GetRange(3, 6));
+                FillComboBoxWithStringList(CbFirstLongitudinalStep, new List<string> { "200" });
+                FillComboBoxWithStringList(CbFirstTransverseStep, new List<string> { "200" });
+                TbFirstTransverseOutput.Text = "25";
+                TbFirstLongitudinalOutput.Text = "25";
             }
             else if (e.AddedItems[0].Equals("3"))
             {
-                this.ChFirstRoll.IsChecked = false;
-                this.ChFirstRoll.Visibility = Visibility.Collapsed;
-                this.MeshKind.Text = "Вид сетки: Тяжелые";
+                ChFirstRoll.IsChecked = false;
+                ChFirstRoll.Visibility = Visibility.Collapsed;
+                MeshKind.Text = "Вид сетки: Тяжелые";
                 _minWidthLimit = 850; _maxWidthLimit = 3050;
-                this.FirstWidthLimit.Text = "(От 650 до 3050)";
+                FirstWidthLimit.Text = "(От 650 до 3050)";
                 _minLengthLimit = 850; _maxLengthLimit = 6250;
-                this.FirstLengthLimit.Text = "(От 850 до 6250)";
-                FillComboBoxWithStringList(this.CbFirstLongitudinal, _firstArmature.GetRange(3, 6));
-                FillComboBoxWithStringList(this.CbFirstTransverse, _firstArmature.GetRange(6, 7));
-                FillComboBoxWithStringList(this.CbFirstLongitudinalStep, new List<string> { "200", "400" });
-                FillComboBoxWithStringList(this.CbFirstTransverseStep, new List<string> { "200" });
-                this.TbFirstTransverseOutput.Text = "25";
-                this.TbFirstLongitudinalOutput.Text = "25";
+                FirstLengthLimit.Text = "(От 850 до 6250)";
+                FillComboBoxWithStringList(CbFirstLongitudinal, _firstArmature.GetRange(3, 6));
+                FillComboBoxWithStringList(CbFirstTransverse, _firstArmature.GetRange(6, 7));
+                FillComboBoxWithStringList(CbFirstLongitudinalStep, new List<string> { "200", "400" });
+                FillComboBoxWithStringList(CbFirstTransverseStep, new List<string> { "200" });
+                TbFirstTransverseOutput.Text = "25";
+                TbFirstLongitudinalOutput.Text = "25";
             }
             else if (e.AddedItems[0].Equals("4"))
             {
-                this.ChFirstRoll.Visibility = Visibility.Visible;
-                this.MeshKind.Text = "Вид сетки: Легкие";
+                ChFirstRoll.Visibility = Visibility.Visible;
+                MeshKind.Text = "Вид сетки: Легкие";
                 _minWidthLimit = 650; _maxWidthLimit = 3800;
-                this.FirstWidthLimit.Text = "(От 650 до 3800)";
+                FirstWidthLimit.Text = "(От 650 до 3800)";
                 _minLengthLimit = 850; _maxLengthLimit = 9000;
-                this.FirstLengthLimit.Text = "(От 850 до 9000)";
-                FillComboBoxWithStringList(this.CbFirstLongitudinal, _firstArmature.GetRange(0, 6));
-                FillComboBoxWithStringList(this.CbFirstTransverse, _firstArmature.GetRange(0, 6));
-                FillComboBoxWithStringList(this.CbFirstLongitudinalStep, new List<string> { "100", "150", "200", "300", "400", "500" });
-                FillComboBoxWithStringList(this.CbFirstTransverseStep, new List<string> { "75", "100", "150", "125", "175", "200", "250", "300", "400" });
-                this.TbFirstTransverseOutput.Text = "25";
-                this.TbFirstLongitudinalOutput.Text = "25";
+                FirstLengthLimit.Text = "(От 850 до 9000)";
+                FillComboBoxWithStringList(CbFirstLongitudinal, _firstArmature.GetRange(0, 6));
+                FillComboBoxWithStringList(CbFirstTransverse, _firstArmature.GetRange(0, 6));
+                FillComboBoxWithStringList(CbFirstLongitudinalStep, new List<string> { "100", "150", "200", "300", "400", "500" });
+                FillComboBoxWithStringList(CbFirstTransverseStep, new List<string> { "75", "100", "150", "125", "175", "200", "250", "300", "400" });
+                TbFirstTransverseOutput.Text = "25";
+                TbFirstLongitudinalOutput.Text = "25";
             }
             else if (e.AddedItems[0].Equals("5"))
             {
-                this.ChFirstRoll.Visibility = Visibility.Visible;
-                this.MeshKind.Text = "Вид сетки: Легкие";
+                ChFirstRoll.Visibility = Visibility.Visible;
+                MeshKind.Text = "Вид сетки: Легкие";
                 _minWidthLimit = 650; _maxWidthLimit = 3800;
-                this.FirstWidthLimit.Text = "(От 650 до 3800)";
+                FirstWidthLimit.Text = "(От 650 до 3800)";
                 _minLengthLimit = 3950; _maxLengthLimit = 9000;
-                this.FirstLengthLimit.Text = "(От 3950 до 9000)";
-                FillComboBoxWithStringList(this.CbFirstLongitudinal, _firstArmature.GetRange(0, 3));
-                FillComboBoxWithStringList(this.CbFirstTransverse, _firstArmature.GetRange(2, 4));
-                FillComboBoxWithStringList(this.CbFirstLongitudinalStep, new List<string> { "100", "150", "200", "300", "400", "500" });
-                FillComboBoxWithStringList(this.CbFirstTransverseStep, new List<string> { "75", "100", "150", "125", "175", "200", "250", "300", "400" });
-                this.TbFirstTransverseOutput.Text = "25";
-                this.TbFirstLongitudinalOutput.Text = "25";
+                FirstLengthLimit.Text = "(От 3950 до 9000)";
+                FillComboBoxWithStringList(CbFirstLongitudinal, _firstArmature.GetRange(0, 3));
+                FillComboBoxWithStringList(CbFirstTransverse, _firstArmature.GetRange(2, 4));
+                FillComboBoxWithStringList(CbFirstLongitudinalStep, new List<string> { "100", "150", "200", "300", "400", "500" });
+                FillComboBoxWithStringList(CbFirstTransverseStep, new List<string> { "75", "100", "150", "125", "175", "200", "250", "300", "400" });
+                TbFirstTransverseOutput.Text = "25";
+                TbFirstLongitudinalOutput.Text = "25";
             }
             /////////////////////////////////////////////////
             // Записываем тип сетки в первое текстовое поле результата
-            this.TbxC.Text = e.AddedItems[0] + "C";
+            TbxC.Text = e.AddedItems[0] + "C";
         }
         // Выбор значения "Рулонная"
         private void ChFirstRoll_Checked(object sender, RoutedEventArgs e)
         {
-            if (this.CbFirstMeshType.SelectedItem.Equals("4"))
+            if (CbFirstMeshType.SelectedItem.Equals("4"))
             {
-                this.TbxC.Text = this.TbxC.Text + "р";
-                _maxLengthLimit = GetMaxLength(this.CbFirstLongitudinal.SelectedItem.ToString());
-                this.FirstLengthLimit.Text = "(От 850 до длины рулона)";
+                TbxC.Text = TbxC.Text + "р";
+                _maxLengthLimit = GetMaxLength(CbFirstLongitudinal.SelectedItem.ToString());
+                FirstLengthLimit.Text = "(От 850 до длины рулона)";
                 LengthChange();
             }
-            else if (this.CbFirstMeshType.SelectedItem.Equals("5"))
+            else if (CbFirstMeshType.SelectedItem.Equals("5"))
             {
-                this.TbxC.Text = this.TbxC.Text + "р";
-                _maxLengthLimit = GetMaxLength(this.CbFirstLongitudinal.SelectedItem.ToString());
-                this.FirstLengthLimit.Text = "(От 3950 до длины рулона)";
+                TbxC.Text = TbxC.Text + "р";
+                _maxLengthLimit = GetMaxLength(CbFirstLongitudinal.SelectedItem.ToString());
+                FirstLengthLimit.Text = "(От 3950 до длины рулона)";
                 LengthChange();
             }
         }
         // Отмена выбора "Рулонная"
         private void ChFirstRoll_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (this.CbFirstMeshType.SelectedItem.Equals("4"))
+            if (CbFirstMeshType.SelectedItem.Equals("4"))
             {
-                this.TbxC.Text = this.TbxC.Text.TrimEnd('р');
+                TbxC.Text = TbxC.Text.TrimEnd('р');
                 _minLengthLimit = 850; _maxLengthLimit = 9000;
-                this.FirstLengthLimit.Text = "(От 850 до 9000)";
+                FirstLengthLimit.Text = "(От 850 до 9000)";
                 LengthChange();
             }
-            if (this.CbFirstMeshType.SelectedItem.Equals("5"))
+            if (CbFirstMeshType.SelectedItem.Equals("5"))
             {
-                this.TbxC.Text = this.TbxC.Text.TrimEnd('р');
+                TbxC.Text = TbxC.Text.TrimEnd('р');
                 _minLengthLimit = 3950; _maxLengthLimit = 9000;
-                this.FirstLengthLimit.Text = "(От 3950 до 9000)";
+                FirstLengthLimit.Text = "(От 3950 до 9000)";
                 LengthChange();
             }
         }
@@ -242,20 +236,20 @@ namespace mpMeshes
             {
                 // вывод результата
                 if (int.Parse(((TextBox)sender).Text) < _minWidthLimit)
-                    this.TbMessage.Text = _helpFunc.Message(1, _minWidthLimit.ToString(CultureInfo.InvariantCulture));
+                    TbMessage.Text = _helpFunc.Message(1, _minWidthLimit.ToString(CultureInfo.InvariantCulture));
                 else if (int.Parse(((TextBox)sender).Text) > _maxWidthLimit)
-                    this.TbMessage.Text = _helpFunc.Message(2, _maxWidthLimit.ToString(CultureInfo.InvariantCulture));
+                    TbMessage.Text = _helpFunc.Message(2, _maxWidthLimit.ToString(CultureInfo.InvariantCulture));
                 else
                 {
-                    this.TbMessage.Text = _helpFunc.Message(0, string.Empty);
-                    this.TbFirstb.Text = (int.Parse(((TextBox)sender).Text) / 10).ToString(CultureInfo.InvariantCulture) + "x";
+                    TbMessage.Text = _helpFunc.Message(0, string.Empty);
+                    TbFirstb.Text = (int.Parse(((TextBox)sender).Text) / 10).ToString(CultureInfo.InvariantCulture) + "x";
                 }
                 // Доборный шаг
                 AdditionallyStep();
                 // масса
                 FirstGetMass();
             }
-            else this.TbFirstb.Text = string.Empty;
+            else TbFirstb.Text = string.Empty;
         }
         // Изменение текста в поле "Длина сетки"
         private void TbFirstMeshLength_TextChanged(object sender, TextChangedEventArgs e)
@@ -264,71 +258,71 @@ namespace mpMeshes
         }
         private void LengthChange()
         {
-            if (!string.IsNullOrEmpty(this.TbFirstMeshLength.Text))
+            if (!string.IsNullOrEmpty(TbFirstMeshLength.Text))
             {
-                if (int.Parse(this.TbFirstMeshLength.Text) < _minLengthLimit)
-                    this.TbMessage.Text = _helpFunc.Message(3, _minLengthLimit.ToString(CultureInfo.InvariantCulture));
-                else if (int.Parse(this.TbFirstMeshLength.Text) > _maxLengthLimit)
-                    this.TbMessage.Text = _helpFunc.Message(4, _maxLengthLimit.ToString(CultureInfo.InvariantCulture));
+                if (int.Parse(TbFirstMeshLength.Text) < _minLengthLimit)
+                    TbMessage.Text = _helpFunc.Message(3, _minLengthLimit.ToString(CultureInfo.InvariantCulture));
+                else if (int.Parse(TbFirstMeshLength.Text) > _maxLengthLimit)
+                    TbMessage.Text = _helpFunc.Message(4, _maxLengthLimit.ToString(CultureInfo.InvariantCulture));
                 else
                 {
-                    this.TbMessage.Text = _helpFunc.Message(0, string.Empty);
-                    this.TbFirstl.Text = (int.Parse(this.TbFirstMeshLength.Text) / 10).ToString(CultureInfo.InvariantCulture);
+                    TbMessage.Text = _helpFunc.Message(0, string.Empty);
+                    TbFirstl.Text = (int.Parse(TbFirstMeshLength.Text) / 10).ToString(CultureInfo.InvariantCulture);
                 }
                 // Доборный шаг
                 AdditionallyStep();
                 // масса
                 FirstGetMass();
             }
-            else this.TbFirstl.Text = string.Empty;
+            else TbFirstl.Text = string.Empty;
         }
 
         // Заполнение первоночальных значений первой вкладки
         private void FillFirstTab()
         {
             // Заполняем список "Тип сетки"
-            FillComboBoxWithStringList(this.CbFirstMeshType, new List<string> { "1", "2", "3", "4", "5" });
+            FillComboBoxWithStringList(CbFirstMeshType, new List<string> { "1", "2", "3", "4", "5" });
         }
         // Выбор диаметра продольных стержней
         private void CbFirstLongitudinal_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count == 0) return;
 
-            this.TbFirstd.Text = e.AddedItems[0].ToString();
+            TbFirstd.Text = e.AddedItems[0].ToString();
             // Заполняем список классов арматуры
             if (e.AddedItems[0].ToString().Equals("3") ||
                 e.AddedItems[0].ToString().Equals("4") ||
                 e.AddedItems[0].ToString().Equals("5"))
             {
-                this.ChFirstRoll.Visibility = Visibility.Visible;
-                FillComboBoxWithStringList(this.CbFirstLongitudinalClass, new List<string> { "B-I", "Bp-I", "B-II", "Bp-II" });
+                ChFirstRoll.Visibility = Visibility.Visible;
+                FillComboBoxWithStringList(CbFirstLongitudinalClass, new List<string> { "B-I", "Bp-I", "B-II", "Bp-II" });
             }
             else
             {
-                this.ChFirstRoll.IsChecked = false;
-                this.ChFirstRoll.Visibility = Visibility.Collapsed;
-                FillComboBoxWithStringList(this.CbFirstLongitudinalClass, new List<string> { "A-I", "A-II", "A-III", "A-IV", "A-V", "A-VI" });
+                ChFirstRoll.IsChecked = false;
+                ChFirstRoll.Visibility = Visibility.Collapsed;
+                FillComboBoxWithStringList(CbFirstLongitudinalClass, new List<string> { "A-I", "A-II", "A-III", "A-IV", "A-V", "A-VI" });
             }
             // Отношение меньшего диаметра к большему
-            if (this.CbFirstTransverse.Items.Count > 0)
+            if (CbFirstTransverse.Items.Count > 0)
             {
                 if (double.Parse(e.AddedItems[0].ToString()) >
-                    double.Parse(this.CbFirstTransverse.SelectedItem.ToString()))
+                    double.Parse(CbFirstTransverse.SelectedItem.ToString()))
                 {
-                    this.TbMessage.Text = (double.Parse(this.CbFirstTransverse.SelectedItem.ToString())
-                                           / double.Parse(e.AddedItems[0].ToString())) < 0.25 ? "Отношение меньшего диаметра стержня к большему должно быть не менее 0.25" : string.Empty;
+                    TbMessage.Text = double.Parse(CbFirstTransverse.SelectedItem.ToString())
+                                     / double.Parse(e.AddedItems[0].ToString()) < 0.25 ? "Отношение меньшего диаметра стержня к большему должно быть не менее 0.25" : string.Empty;
                 }
                 else
                 {
-                    this.TbMessage.Text = (double.Parse(e.AddedItems[0].ToString())
-                                           / double.Parse(this.CbFirstTransverse.SelectedItem.ToString())) < 0.25 ? "Отношение меньшего диаметра стержня к большему должно быть не менее 0.25" : string.Empty;
+                    TbMessage.Text = double.Parse(e.AddedItems[0].ToString())
+                                     / double.Parse(CbFirstTransverse.SelectedItem.ToString()) < 0.25 ? "Отношение меньшего диаметра стержня к большему должно быть не менее 0.25" : string.Empty;
                 }
             }
             // Максимальная длина рулона
-            if (this.CbFirstMeshType.SelectedItem.ToString().Equals("4") ||
-                this.CbFirstMeshType.SelectedItem.ToString().Equals("5"))
+            if (CbFirstMeshType.SelectedItem.ToString().Equals("4") ||
+                CbFirstMeshType.SelectedItem.ToString().Equals("5"))
             {
-                if ((bool)this.ChFirstRoll.IsChecked)
+                if (ChFirstRoll.IsChecked != null && ChFirstRoll.IsChecked.Value)
                     _maxLengthLimit = GetMaxLength(e.AddedItems[0].ToString());
                 else _maxLengthLimit = 9000;
             }
@@ -341,27 +335,27 @@ namespace mpMeshes
         {
             if (e.AddedItems.Count == 0) return;
 
-            this.TbFirstdOne.Text = e.AddedItems[0].ToString();
+            TbFirstdOne.Text = e.AddedItems[0].ToString();
             // Заполняем список классов арматуры
             if (e.AddedItems[0].ToString().Equals("3") ||
                 e.AddedItems[0].ToString().Equals("4") ||
                 e.AddedItems[0].ToString().Equals("5"))
-                FillComboBoxWithStringList(this.CbFirstTransverseCalss, new List<string> { "B-I", "Bp-I", "B-II", "Bp-II" });
+                FillComboBoxWithStringList(CbFirstTransverseCalss, new List<string> { "B-I", "Bp-I", "B-II", "Bp-II" });
             else
-                FillComboBoxWithStringList(this.CbFirstTransverseCalss, new List<string> { "A-I", "A-II", "A-III", "A-IV", "A-V", "A-VI" });
+                FillComboBoxWithStringList(CbFirstTransverseCalss, new List<string> { "A-I", "A-II", "A-III", "A-IV", "A-V", "A-VI" });
             // Отношение меньшего диаметра к большему
-            if (this.CbFirstLongitudinal.Items.Count > 0)
+            if (CbFirstLongitudinal.Items.Count > 0)
             {
                 if (double.Parse(e.AddedItems[0].ToString()) >
-                    double.Parse(this.CbFirstLongitudinal.SelectedItem.ToString()))
+                    double.Parse(CbFirstLongitudinal.SelectedItem.ToString()))
                 {
-                    this.TbMessage.Text = (double.Parse(this.CbFirstLongitudinal.SelectedItem.ToString())
+                    TbMessage.Text = (double.Parse(CbFirstLongitudinal.SelectedItem.ToString())
                                            / double.Parse(e.AddedItems[0].ToString())) < 0.25 ? "Отношение меньшего диаметра стержня к большему должно быть не менее 0.25" : string.Empty;
                 }
                 else
                 {
-                    this.TbMessage.Text = (double.Parse(e.AddedItems[0].ToString())
-                                           / double.Parse(this.CbFirstLongitudinal.SelectedItem.ToString())) < 0.25 ? "Отношение меньшего диаметра стержня к большему должно быть не менее 0.25" : string.Empty;
+                    TbMessage.Text = (double.Parse(e.AddedItems[0].ToString())
+                                           / double.Parse(CbFirstLongitudinal.SelectedItem.ToString())) < 0.25 ? "Отношение меньшего диаметра стержня к большему должно быть не менее 0.25" : string.Empty;
                 }
             }
             // масса
@@ -372,14 +366,14 @@ namespace mpMeshes
         {
             if (e.AddedItems.Count == 0) return;
 
-            this.TbFirstdClass.Text = e.AddedItems[0].ToString();
+            TbFirstdClass.Text = e.AddedItems[0].ToString();
         }
         // Выбор класса арматуры поперченых стержней
         private void CbFirstTransverseCalss_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count == 0) return;
 
-            this.TbFirstdOneClass.Text = e.AddedItems[0].ToString();
+            TbFirstdOneClass.Text = e.AddedItems[0].ToString();
         }
         // Выбор шага продольных стержней
         private void CbFirstLongitudinalStep_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -387,14 +381,14 @@ namespace mpMeshes
             if (e.AddedItems.Count == 0) return;
 
             // Если тип сетки 1, 2 или 3 с шагом 200, то шаг не указывается
-            if (this.CbFirstMeshType.SelectedItem.ToString().Equals("1") ||
-                this.CbFirstMeshType.SelectedItem.ToString().Equals("2") ||
-                (this.CbFirstMeshType.SelectedItem.ToString().Equals("3") &
+            if (CbFirstMeshType.SelectedItem.ToString().Equals("1") ||
+                CbFirstMeshType.SelectedItem.ToString().Equals("2") ||
+                (CbFirstMeshType.SelectedItem.ToString().Equals("3") &
                 e.AddedItems[0].ToString().Equals("200"))
                 )
-                this.TbFirstdStep.Text = string.Empty;
+                TbFirstdStep.Text = string.Empty;
             else
-                this.TbFirstdStep.Text = "-" + e.AddedItems[0];
+                TbFirstdStep.Text = "-" + e.AddedItems[0];
             // Доборный шаг
             AdditionallyStep();
             // масса
@@ -406,14 +400,14 @@ namespace mpMeshes
             if (e.AddedItems.Count == 0) return;
 
             // Если тип сетки 1, 2 или 3 с шагом 200, то шаг не указывается
-            if (this.CbFirstMeshType.SelectedItem.ToString().Equals("1") ||
-                this.CbFirstMeshType.SelectedItem.ToString().Equals("2") ||
-                (this.CbFirstMeshType.SelectedItem.ToString().Equals("3") &
+            if (CbFirstMeshType.SelectedItem.ToString().Equals("1") ||
+                CbFirstMeshType.SelectedItem.ToString().Equals("2") ||
+                (CbFirstMeshType.SelectedItem.ToString().Equals("3") &
                 e.AddedItems[0].ToString().Equals("200"))
                 )
-                this.TbFirstdOneStep.Text = string.Empty;
+                TbFirstdOneStep.Text = string.Empty;
             else
-                this.TbFirstdOneStep.Text = "-" + e.AddedItems[0];
+                TbFirstdOneStep.Text = "-" + e.AddedItems[0];
             // Доборный шаг
             AdditionallyStep();
             // масса
@@ -426,34 +420,34 @@ namespace mpMeshes
             // то стираем этот ввод и выходим
             if (((TextBox)sender).Name.Equals("TbFirstLongitudinalOutputTwo"))
             {
-                if (string.IsNullOrEmpty(this.TbFirstLongitudinalOutput.Text))
+                if (string.IsNullOrEmpty(TbFirstLongitudinalOutput.Text))
                 {
-                    this.TbFirstLongitudinalOutputTwo.Text = string.Empty;
+                    TbFirstLongitudinalOutputTwo.Text = string.Empty;
                     return;
                 }
             }
             if (string.IsNullOrEmpty(((TextBox)sender).Text))
             {
-                this.TbFirstaOne.Text = string.Empty; this.TbFirstaTwo.Text = string.Empty;
-                this.TbMessage.Text = string.Empty;
+                TbFirstaOne.Text = string.Empty; TbFirstaTwo.Text = string.Empty;
+                TbMessage.Text = string.Empty;
                 FillTransverseOutput();
                 // Доборный шаг
                 AdditionallyStep();
                 return;
             }
 
-            switch (this.CbFirstMeshType.SelectedItem.ToString())
+            switch (CbFirstMeshType.SelectedItem.ToString())
             {
                 // Для типа 1 - кратно 25
                 case "1":
-                    this.TbMessage.Text = Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25) != 0 ? "Значение выпуска должно быть кратно 25" : string.Empty;
+                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep ? "Значение выпуска должно быть кратно 25" : string.Empty;
                     break;
                 // Для типа 2,3 - кратно 25
                 case "2":
-                    this.TbMessage.Text = Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25) != 0 ? "Значение выпуска должно быть кратно 25" : string.Empty;
+                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep ? "Значение выпуска должно быть кратно 25" : string.Empty;
                     break;
                 case "3":
-                    this.TbMessage.Text = Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25) != 0 ? "Значение выпуска должно быть кратно 25" : string.Empty;
+                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep ? "Значение выпуска должно быть кратно 25" : string.Empty;
                     break;
                 // Для 4,5 - от 30 до 200 кратно 5
                 case "4":
@@ -461,26 +455,26 @@ namespace mpMeshes
                     {
                         if (int.Parse(((TextBox)sender).Text) < 30 ||
                             int.Parse(((TextBox)sender).Text) > 200)
-                            this.TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 30 до 200 мм кратно 5 мм";
+                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 30 до 200 мм кратно 5 мм";
                         else
-                            if (Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 5) != 0)
-                            this.TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 30 до 200 мм кратно 5 мм";
-                        else this.TbMessage.Text = string.Empty;
+                            if (Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 5)) > _ep)
+                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 30 до 200 мм кратно 5 мм";
+                        else TbMessage.Text = string.Empty;
                     }
-                    else this.TbMessage.Text = string.Empty;
+                    else TbMessage.Text = string.Empty;
                     break;
                 case "5":
                     if (int.Parse(((TextBox)sender).Text) != 25)
                     {
                         if (int.Parse(((TextBox)sender).Text) < 30 ||
                             int.Parse(((TextBox)sender).Text) > 200)
-                            this.TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 30 до 200 мм кратно 5 мм";
+                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 30 до 200 мм кратно 5 мм";
                         else
-                            if (Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 5) != 0)
-                            this.TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 30 до 200 мм кратно 5 мм";
-                        else this.TbMessage.Text = string.Empty;
+                            if (Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 5)) > _ep)
+                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 30 до 200 мм кратно 5 мм";
+                        else TbMessage.Text = string.Empty;
                     }
-                    else this.TbMessage.Text = string.Empty;
+                    else TbMessage.Text = string.Empty;
                     break;
             }
             FillTransverseOutput();
@@ -492,30 +486,30 @@ namespace mpMeshes
         {
             if (string.IsNullOrEmpty(((TextBox)sender).Text))
             {
-                this.TbFirsta.Text = string.Empty;
-                this.TbMessage.Text = string.Empty;
+                TbFirsta.Text = string.Empty;
+                TbMessage.Text = string.Empty;
                 FillLongitudinalOutput();
                 // Доборный шаг
                 AdditionallyStep();
                 return;
             }
 
-            switch (this.CbFirstMeshType.SelectedItem.ToString())
+            switch (CbFirstMeshType.SelectedItem.ToString())
             {
                 // Для типа 1 - 25
                 case "1":
-                    this.TbFirstTransverseOutput.Text = "25";
+                    TbFirstTransverseOutput.Text = "25";
                     break;
                 // Для типа 2,3 - кратно 25
                 case "2":
-                    if (Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25) != 0)
-                        this.TbMessage.Text = "Значение выпуска должно быть кратно 25";
-                    else this.TbMessage.Text = string.Empty;
+                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep 
+                        ? "Значение выпуска должно быть кратно 25" 
+                        : string.Empty;
                     break;
                 case "3":
-                    if (Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25) != 0)
-                        this.TbMessage.Text = "Значение выпуска должно быть кратно 25";
-                    else this.TbMessage.Text = string.Empty;
+                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep 
+                        ? "Значение выпуска должно быть кратно 25" 
+                        : string.Empty;
                     break;
                 // Для 4,5 - от 15, 20, 30, а также от 25 до 100 кратно 100
                 case "4":
@@ -525,13 +519,13 @@ namespace mpMeshes
                     {
                         if (int.Parse(((TextBox)sender).Text) < 25 ||
                             int.Parse(((TextBox)sender).Text) > 100)
-                            this.TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 15,20 и 30 мм, а также от 25 до 100 мм кратно 25 мм";
+                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 15,20 и 30 мм, а также от 25 до 100 мм кратно 25 мм";
                         else
-                            if (Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25) != 0)
-                            this.TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 15,20 и 30 мм, а также от 25 до 100 мм кратно 25 мм";
-                        else this.TbMessage.Text = string.Empty;
+                            if (Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep)
+                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 15,20 и 30 мм, а также от 25 до 100 мм кратно 25 мм";
+                        else TbMessage.Text = string.Empty;
                     }
-                    else this.TbMessage.Text = string.Empty;
+                    else TbMessage.Text = string.Empty;
                     break;
                 case "5":
                     if (int.Parse(((TextBox)sender).Text) != 15 ||
@@ -540,13 +534,13 @@ namespace mpMeshes
                     {
                         if (int.Parse(((TextBox)sender).Text) < 25 ||
                             int.Parse(((TextBox)sender).Text) > 100)
-                            this.TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 15,20 и 30 мм, а также от 25 до 100 мм кратно 25 мм";
+                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 15,20 и 30 мм, а также от 25 до 100 мм кратно 25 мм";
                         else
-                            if (Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25) != 0)
-                            this.TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 15,20 и 30 мм, а также от 25 до 100 мм кратно 25 мм";
-                        else this.TbMessage.Text = string.Empty;
+                            if (Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep)
+                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 15,20 и 30 мм, а также от 25 до 100 мм кратно 25 мм";
+                        else TbMessage.Text = string.Empty;
                     }
-                    else this.TbMessage.Text = string.Empty;
+                    else TbMessage.Text = string.Empty;
                     break;
             }
             FillLongitudinalOutput();
@@ -556,40 +550,40 @@ namespace mpMeshes
         // Заполнение значения выпусков продольных стержней
         private void FillTransverseOutput()
         {
-            string a1 = this.TbFirstLongitudinalOutput.Text;
-            string a2 = this.TbFirstLongitudinalOutputTwo.Text;
+            string a1 = TbFirstLongitudinalOutput.Text;
+            string a2 = TbFirstLongitudinalOutputTwo.Text;
             // Если значения одинаковые
             if (a1.Equals(a2))
             {
-                if (!a1.Equals("25") & !this.TbFirstTransverseOutput.Text.Equals("25"))
+                if (!a1.Equals("25") & !TbFirstTransverseOutput.Text.Equals("25"))
                 {
-                    this.TbFirstaOne.Text = a1;
-                    this.TbFirsta.Text = this.TbFirstTransverseOutput.Text;
+                    TbFirstaOne.Text = a1;
+                    TbFirsta.Text = TbFirstTransverseOutput.Text;
                 }
                 else
                 {
-                    this.TbFirstaOne.Text = string.Empty;
-                    this.TbFirstaTwo.Text = string.Empty;
-                    this.TbFirsta.Text = string.Empty;
+                    TbFirstaOne.Text = string.Empty;
+                    TbFirstaTwo.Text = string.Empty;
+                    TbFirsta.Text = string.Empty;
                 }
             }
             // Если значения не равны
             if (!a1.Equals(a2))
             {
                 // Если второе пустое, первое 25 и нижнее 25 - не пишем
-                if (a1.Equals("25") & string.IsNullOrEmpty(a2) & this.TbFirstTransverseOutput.Text.Equals("25"))
+                if (a1.Equals("25") & string.IsNullOrEmpty(a2) & TbFirstTransverseOutput.Text.Equals("25"))
                 {
-                    this.TbFirstaOne.Text = string.Empty;
-                    this.TbFirstaTwo.Text = string.Empty;
-                    this.TbFirsta.Text = string.Empty;
+                    TbFirstaOne.Text = string.Empty;
+                    TbFirstaTwo.Text = string.Empty;
+                    TbFirsta.Text = string.Empty;
                 }
                 // Иначе - пишем все
                 else
                 {
-                    this.TbFirstaOne.Text = a1;
+                    TbFirstaOne.Text = a1;
                     if (!string.IsNullOrEmpty(a2))
-                        this.TbFirstaTwo.Text = "+" + a2;
-                    this.TbFirsta.Text = this.TbFirstTransverseOutput.Text;
+                        TbFirstaTwo.Text = "+" + a2;
+                    TbFirsta.Text = TbFirstTransverseOutput.Text;
                 }
             }
             // масса
@@ -598,37 +592,37 @@ namespace mpMeshes
         // Заполнение значения выпусков поперченых стержней
         private void FillLongitudinalOutput()
         {
-            string a = this.TbFirstTransverseOutput.Text;
+            string a = TbFirstTransverseOutput.Text;
             // Если значение равно 25
             if (a.Equals("25"))
             {
                 // Если верхнее левое - 25, правое - пусто
                 // тогда все стираем
-                if (this.TbFirstLongitudinalOutput.Text.Equals("25") & string.IsNullOrEmpty(this.TbFirstLongitudinalOutputTwo.Text))
+                if (TbFirstLongitudinalOutput.Text.Equals("25") & string.IsNullOrEmpty(TbFirstLongitudinalOutputTwo.Text))
                 {
-                    this.TbFirstaOne.Text = string.Empty;
-                    this.TbFirstaTwo.Text = string.Empty;
-                    this.TbFirsta.Text = string.Empty;
+                    TbFirstaOne.Text = string.Empty;
+                    TbFirstaTwo.Text = string.Empty;
+                    TbFirsta.Text = string.Empty;
                 }
                 // Иначе - пишем
                 else
                 {
-                    this.TbFirstaOne.Text = this.TbFirstLongitudinalOutput.Text;
-                    this.TbFirstaTwo.Text = "+" + this.TbFirstLongitudinalOutputTwo.Text;
-                    this.TbFirsta.Text = a;
+                    TbFirstaOne.Text = TbFirstLongitudinalOutput.Text;
+                    TbFirstaTwo.Text = "+" + TbFirstLongitudinalOutputTwo.Text;
+                    TbFirsta.Text = a;
                 }
             }
             // Если не равно 25
             else
             {
                 // Если верхнее левое пустое - не пишем
-                if (string.IsNullOrEmpty(this.TbFirstLongitudinalOutput.Text))
-                    this.TbFirsta.Text = string.Empty;
+                if (string.IsNullOrEmpty(TbFirstLongitudinalOutput.Text))
+                    TbFirsta.Text = string.Empty;
                 else
                 {
-                    this.TbFirstaOne.Text = this.TbFirstLongitudinalOutput.Text;
-                    this.TbFirstaTwo.Text = "+" + this.TbFirstLongitudinalOutputTwo.Text;
-                    this.TbFirsta.Text = a;
+                    TbFirstaOne.Text = TbFirstLongitudinalOutput.Text;
+                    TbFirstaTwo.Text = "+" + TbFirstLongitudinalOutputTwo.Text;
+                    TbFirsta.Text = a;
                 }
             }
             // масса
@@ -638,33 +632,33 @@ namespace mpMeshes
         private void AdditionallyStep()
         {
             // Для продольных стержней
-            if (!string.IsNullOrEmpty(this.TbFirstMeshWidth.Text))
+            if (!string.IsNullOrEmpty(TbFirstMeshWidth.Text))
             {
-                var b = double.Parse(this.TbFirstMeshWidth.Text); // Ширина
-                var s = double.Parse(this.CbFirstLongitudinalStep.SelectedItem.ToString()); // Шаг
-                var a = double.Parse(this.TbFirstTransverseOutput.Text); // Выпуск арматуры
+                var b = double.Parse(TbFirstMeshWidth.Text); // Ширина
+                var s = double.Parse(CbFirstLongitudinalStep.SelectedItem.ToString()); // Шаг
+                var a = double.Parse(TbFirstTransverseOutput.Text); // Выпуск арматуры
                 var snum = Math.Truncate((b - a - a) / s); // Количество стержней
                 var addstep = (b - (snum * s) - a - a);
-                if (addstep != 0.0)
-                    this.TbFirstdAddStep.Text = "(" + addstep.ToString(CultureInfo.InvariantCulture) + ")";
-                else this.TbFirstdAddStep.Text = string.Empty;
+                if (Math.Abs(addstep) > _ep)
+                    TbFirstdAddStep.Text = "(" + addstep.ToString(CultureInfo.InvariantCulture) + ")";
+                else TbFirstdAddStep.Text = string.Empty;
             }
             // Для поперечных стержней
-            if (!string.IsNullOrEmpty(this.TbFirstMeshLength.Text))
+            if (!string.IsNullOrEmpty(TbFirstMeshLength.Text))
             {
-                var l = double.Parse(this.TbFirstMeshLength.Text); // Длина
-                var s = double.Parse(this.CbFirstTransverseStep.SelectedItem.ToString()); // шаг
-                double a = 0; double a2 = 0; double addstep = 0; double snum = 0;
-                if (!string.IsNullOrEmpty(this.TbFirstLongitudinalOutput.Text))
-                    a = double.Parse(this.TbFirstLongitudinalOutput.Text); // Выпуск 1
-                if (!string.IsNullOrEmpty(this.TbFirstLongitudinalOutputTwo.Text))
-                    a2 = double.Parse(this.TbFirstLongitudinalOutputTwo.Text); // Выпуск 2
-                if (a == 0.0)
+                var l = double.Parse(TbFirstMeshLength.Text); // Длина
+                var s = double.Parse(CbFirstTransverseStep.SelectedItem.ToString()); // шаг
+                double a = 0; double a2 = 0; double addstep; double snum;
+                if (!string.IsNullOrEmpty(TbFirstLongitudinalOutput.Text))
+                    a = double.Parse(TbFirstLongitudinalOutput.Text); // Выпуск 1
+                if (!string.IsNullOrEmpty(TbFirstLongitudinalOutputTwo.Text))
+                    a2 = double.Parse(TbFirstLongitudinalOutputTwo.Text); // Выпуск 2
+                if (Math.Abs(a) < _ep)
                 {
                     snum = Math.Truncate((l - a2 - a2) / s);
                     addstep = (l - (snum * s) - a2 - a2);
                 }
-                else if (a2 == 0.0)
+                else if (Math.Abs(a2) < _ep)
                 {
                     snum = Math.Truncate((l - a - a) / s);
                     addstep = (l - (snum * s) - a - a);
@@ -674,9 +668,9 @@ namespace mpMeshes
                     snum = Math.Truncate((l - a - a2) / s);
                     addstep = (l - (snum * s) - a - a2);
                 }
-                if (addstep != 0.0)
-                    this.TbFirstdOneAddStep.Text = "(" + addstep.ToString(CultureInfo.InvariantCulture) + ")";
-                else this.TbFirstdOneAddStep.Text = string.Empty;
+                if (Math.Abs(addstep) > _ep)
+                    TbFirstdOneAddStep.Text = "(" + addstep.ToString(CultureInfo.InvariantCulture) + ")";
+                else TbFirstdOneAddStep.Text = string.Empty;
             }
             TbdAddStep_TextInput();
             TbdOneAddStep_TextInput();
@@ -686,53 +680,53 @@ namespace mpMeshes
         // Ввод текста в поле "Доборный шаг продольных стержней"
         private void TbdAddStep_TextInput()
         {
-            if (!string.IsNullOrEmpty(this.TbFirstdAddStep.Text))
+            if (!string.IsNullOrEmpty(TbFirstdAddStep.Text))
             {
 
-                if (this.CbFirstMeshType.SelectedItem.ToString().Equals("1") ||
-                    this.CbFirstMeshType.SelectedItem.ToString().Equals("2") ||
-                    this.CbFirstMeshType.SelectedItem.ToString().Equals("3")
+                if (CbFirstMeshType.SelectedItem.ToString().Equals("1") ||
+                    CbFirstMeshType.SelectedItem.ToString().Equals("2") ||
+                    CbFirstMeshType.SelectedItem.ToString().Equals("3")
                     )
                 {
-                    this.TbFirstOutputOneMessage.Visibility = Visibility.Visible;
-                    this.TbFirstOutputOneMessage.Text = "Доборный шаг продольных стержней в тяжелых сетках не допускается!";
+                    TbFirstOutputOneMessage.Visibility = Visibility.Visible;
+                    TbFirstOutputOneMessage.Text = "Доборный шаг продольных стержней в тяжелых сетках не допускается!";
                 }
-                else if (this.CbFirstMeshType.SelectedItem.ToString().Equals("4") ||
-                    this.CbFirstMeshType.SelectedItem.ToString().Equals("5"))
+                else if (CbFirstMeshType.SelectedItem.ToString().Equals("4") ||
+                    CbFirstMeshType.SelectedItem.ToString().Equals("5"))
                 {
                     //  Доборный шаг
                     double addstep = double.Parse(
-                        this.TbFirstdAddStep.Text.Substring(0, this.TbFirstdAddStep.Text.Length - 1).Remove(0, 1));
+                        TbFirstdAddStep.Text.Substring(0, TbFirstdAddStep.Text.Length - 1).Remove(0, 1));
                     // Основной шаг 
-                    double step = double.Parse(this.CbFirstLongitudinalStep.SelectedItem.ToString());
+                    double step = double.Parse(CbFirstLongitudinalStep.SelectedItem.ToString());
                     if (addstep < 50 || addstep > step)
                     {
-                        this.TbFirstOutputOneMessage.Visibility = Visibility.Visible;
-                        this.TbFirstOutputOneMessage.Text = "Доборный шаг продольных стержней в легких сетках должен быть от 50 мм до размера основного шага ("
+                        TbFirstOutputOneMessage.Visibility = Visibility.Visible;
+                        TbFirstOutputOneMessage.Text = "Доборный шаг продольных стержней в легких сетках должен быть от 50 мм до размера основного шага ("
                             + step + ") кратно 10 мм";
                     }
-                    else if (Math.IEEERemainder(addstep, 10) != 0)
+                    else if (Math.Abs(Math.IEEERemainder(addstep, 10)) > _ep)
                     {
-                        this.TbFirstOutputOneMessage.Visibility = Visibility.Visible;
-                        this.TbFirstOutputOneMessage.Text = "Доборный шаг продольных стержней в легких сетках должен быть от 50 мм до размера основного шага ("
+                        TbFirstOutputOneMessage.Visibility = Visibility.Visible;
+                        TbFirstOutputOneMessage.Text = "Доборный шаг продольных стержней в легких сетках должен быть от 50 мм до размера основного шага ("
                             + step + ") кратно 10 мм";
                     }
                     else
                     {
-                        this.TbFirstOutputOneMessage.Visibility = Visibility.Collapsed;
-                        this.TbFirstOutputOneMessage.Text = string.Empty;
+                        TbFirstOutputOneMessage.Visibility = Visibility.Collapsed;
+                        TbFirstOutputOneMessage.Text = string.Empty;
                     }
                 }
                 else
                 {
-                    this.TbFirstOutputOneMessage.Visibility = Visibility.Collapsed;
-                    this.TbFirstOutputOneMessage.Text = string.Empty;
+                    TbFirstOutputOneMessage.Visibility = Visibility.Collapsed;
+                    TbFirstOutputOneMessage.Text = string.Empty;
                 }
             }
             else
             {
-                this.TbFirstOutputOneMessage.Visibility = Visibility.Collapsed;
-                this.TbFirstOutputOneMessage.Text = string.Empty;
+                TbFirstOutputOneMessage.Visibility = Visibility.Collapsed;
+                TbFirstOutputOneMessage.Text = string.Empty;
             }
             // масса
             FirstGetMass();
@@ -740,63 +734,65 @@ namespace mpMeshes
         // Ввод текста в поле "Доборный шаг поперечных стержней"
         private void TbdOneAddStep_TextInput()
         {
-            if (!string.IsNullOrEmpty(this.TbFirstdOneAddStep.Text))
+            if (!string.IsNullOrEmpty(TbFirstdOneAddStep.Text))
             {
 
-                if (this.CbFirstMeshType.SelectedItem.ToString().Equals("1"))
+                if (CbFirstMeshType.SelectedItem.ToString().Equals("1"))
                 {
                     // Доборный шаг
                     var addstep = double.Parse(
-                        this.TbFirstdOneAddStep.Text.Substring(0, this.TbFirstdOneAddStep.Text.Length - 1).Remove(0, 1));
-                    if (addstep != 100.0 & addstep != 200.0 & addstep != 300.0)
+                        TbFirstdOneAddStep.Text.Substring(0, TbFirstdOneAddStep.Text.Length - 1).Remove(0, 1));
+                    if (Math.Abs(addstep - 100.0) > _ep &&
+                        Math.Abs(addstep - 200.0) > _ep &&
+                        Math.Abs(addstep - 300.0) > _ep)
                     {
-                        this.TbFirstOutputTwoMessage.Visibility = Visibility.Visible;
-                        this.TbFirstOutputTwoMessage.Text = "Доборный шаг поперечных стержней в тяжелых сетках типа 1 должен быть 100, 200 или 300 мм!";
+                        TbFirstOutputTwoMessage.Visibility = Visibility.Visible;
+                        TbFirstOutputTwoMessage.Text = "Доборный шаг поперечных стержней в тяжелых сетках типа 1 должен быть 100, 200 или 300 мм!";
                     }
                     else
                     {
-                        this.TbFirstOutputTwoMessage.Visibility = Visibility.Collapsed;
-                        this.TbFirstOutputTwoMessage.Text = string.Empty;
+                        TbFirstOutputTwoMessage.Visibility = Visibility.Collapsed;
+                        TbFirstOutputTwoMessage.Text = string.Empty;
                     }
                 }
-                else if (this.CbFirstMeshType.SelectedItem.ToString().Equals("2") ||
-                    this.CbFirstMeshType.SelectedItem.ToString().Equals("3"))
+                else if (CbFirstMeshType.SelectedItem.ToString().Equals("2") ||
+                    CbFirstMeshType.SelectedItem.ToString().Equals("3"))
                 {
-                    this.TbFirstOutputTwoMessage.Visibility = Visibility.Visible;
-                    this.TbFirstOutputTwoMessage.Text = "Доборный шаг поперечных стержней в тяжелых сетках типа 2,3 не допускается!";
+                    TbFirstOutputTwoMessage.Visibility = Visibility.Visible;
+                    TbFirstOutputTwoMessage.Text = "Доборный шаг поперечных стержней в тяжелых сетках типа 2,3 не допускается!";
                 }
-                else if (this.CbFirstMeshType.SelectedItem.ToString().Equals("4") ||
-                    this.CbFirstMeshType.SelectedItem.ToString().Equals("5"))
+                else if (CbFirstMeshType.SelectedItem.ToString().Equals("4") ||
+                    CbFirstMeshType.SelectedItem.ToString().Equals("5"))
                 {
                     // Доборный шаг
                     double addstep = double.Parse(
-                        this.TbFirstdOneAddStep.Text.Substring(0, this.TbFirstdOneAddStep.Text.Length - 1).Remove(0, 1));
+                        TbFirstdOneAddStep.Text.Substring(0, TbFirstdOneAddStep.Text.Length - 1).Remove(0, 1));
                     if (addstep < 50 || addstep > 250)
                     {
-                        this.TbFirstOutputTwoMessage.Visibility = Visibility.Visible;
-                        this.TbFirstOutputTwoMessage.Text = "Доборный шаг поперечных стержней в легких сетках должен быть от 50 до 250 мм кратно 10 мм!";
+                        TbFirstOutputTwoMessage.Visibility = Visibility.Visible;
+                        TbFirstOutputTwoMessage.Text = "Доборный шаг поперечных стержней в легких сетках должен быть от 50 до 250 мм кратно 10 мм!";
                     }
-                    else if (Math.IEEERemainder(addstep, 10) != 0)
+                    else if (Math.Abs(Math.IEEERemainder(addstep, 10)) > _ep)
                     {
-                        this.TbFirstOutputTwoMessage.Visibility = Visibility.Visible;
-                        this.TbFirstOutputTwoMessage.Text = "Доборный шаг поперечных стержней в легких сетках должен быть от 50 до 250 мм кратно 10 мм!";
+                        TbFirstOutputTwoMessage.Visibility = Visibility.Visible;
+                        TbFirstOutputTwoMessage.Text = "Доборный шаг поперечных стержней в легких сетках должен быть от 50 до 250 мм кратно 10 мм!";
                     }
                     else
                     {
-                        this.TbFirstOutputTwoMessage.Visibility = Visibility.Collapsed;
-                        this.TbFirstOutputTwoMessage.Text = string.Empty;
+                        TbFirstOutputTwoMessage.Visibility = Visibility.Collapsed;
+                        TbFirstOutputTwoMessage.Text = string.Empty;
                     }
                 }
                 else
                 {
-                    this.TbFirstOutputTwoMessage.Visibility = Visibility.Collapsed;
-                    this.TbFirstOutputTwoMessage.Text = string.Empty;
+                    TbFirstOutputTwoMessage.Visibility = Visibility.Collapsed;
+                    TbFirstOutputTwoMessage.Text = string.Empty;
                 }
             }
             else
             {
-                this.TbFirstOutputTwoMessage.Visibility = Visibility.Collapsed;
-                this.TbFirstOutputTwoMessage.Text = string.Empty;
+                TbFirstOutputTwoMessage.Visibility = Visibility.Collapsed;
+                TbFirstOutputTwoMessage.Text = string.Empty;
             }
             // масса
             FirstGetMass();
@@ -806,34 +802,34 @@ namespace mpMeshes
         {
             double l, b, s, s1, sadd = 0, s1Add = 0, a = 0, a1 = 0, a2 = 0;
             // Выпуск поперечных стержней
-            if (!string.IsNullOrEmpty(this.TbFirstTransverseOutput.Text))
-                a = double.Parse(this.TbFirstTransverseOutput.Text);
+            if (!string.IsNullOrEmpty(TbFirstTransverseOutput.Text))
+                a = double.Parse(TbFirstTransverseOutput.Text);
             // Выпуски продольных стержней
-            if (!string.IsNullOrEmpty(this.TbFirstLongitudinalOutput.Text))
-                a1 = double.Parse(this.TbFirstLongitudinalOutput.Text); // Выпуск 1
-            if (!string.IsNullOrEmpty(this.TbFirstLongitudinalOutputTwo.Text))
-                a2 = double.Parse(this.TbFirstLongitudinalOutputTwo.Text); // Выпуск 2
+            if (!string.IsNullOrEmpty(TbFirstLongitudinalOutput.Text))
+                a1 = double.Parse(TbFirstLongitudinalOutput.Text); // Выпуск 1
+            if (!string.IsNullOrEmpty(TbFirstLongitudinalOutputTwo.Text))
+                a2 = double.Parse(TbFirstLongitudinalOutputTwo.Text); // Выпуск 2
             // Диаметр продольных стержней
-            if (this.CbFirstLongitudinal.SelectedIndex == -1) return;
-            var d = this.CbFirstLongitudinal.SelectedItem.ToString();
+            if (CbFirstLongitudinal.SelectedIndex == -1) return;
+            var d = CbFirstLongitudinal.SelectedItem.ToString();
             // Диаметр поперечных стержней
-            if (this.CbFirstTransverse.SelectedIndex == -1) return;
-            var d1 = this.CbFirstTransverse.SelectedItem.ToString();
+            if (CbFirstTransverse.SelectedIndex == -1) return;
+            var d1 = CbFirstTransverse.SelectedItem.ToString();
             // Ширина сетки
-            if (!double.TryParse(this.TbFirstMeshLength.Text, out l)) return;
+            if (!double.TryParse(TbFirstMeshLength.Text, out l)) return;
             // Длина сетки
-            if (!double.TryParse(this.TbFirstMeshWidth.Text, out b)) return;
+            if (!double.TryParse(TbFirstMeshWidth.Text, out b)) return;
             // Шаг продольных стержней
-            if (!double.TryParse(this.CbFirstLongitudinalStep.SelectedItem.ToString(), out s)) return;
+            if (!double.TryParse(CbFirstLongitudinalStep.SelectedItem.ToString(), out s)) return;
             // Шаг поперечных стержней
-            if (!double.TryParse(this.CbFirstTransverseStep.SelectedItem.ToString(), out s1)) return;
+            if (!double.TryParse(CbFirstTransverseStep.SelectedItem.ToString(), out s1)) return;
             // Доборный шаг продолных стержней
-            if (!string.IsNullOrEmpty(this.TbFirstdAddStep.Text))
-                if (!double.TryParse(this.TbFirstdAddStep.Text.Substring(0, this.TbFirstdAddStep.Text.Length - 1).Remove(0, 1)
+            if (!string.IsNullOrEmpty(TbFirstdAddStep.Text))
+                if (!double.TryParse(TbFirstdAddStep.Text.Substring(0, TbFirstdAddStep.Text.Length - 1).Remove(0, 1)
                     , out sadd)) return;
             // Доборный шаг поперечных стержней
-            if (!string.IsNullOrEmpty(this.TbFirstdOneAddStep.Text))
-                if (!double.TryParse(this.TbFirstdOneAddStep.Text.Substring(0, this.TbFirstdOneAddStep.Text.Length - 1).Remove(0, 1)
+            if (!string.IsNullOrEmpty(TbFirstdOneAddStep.Text))
+                if (!double.TryParse(TbFirstdOneAddStep.Text.Substring(0, TbFirstdOneAddStep.Text.Length - 1).Remove(0, 1)
                     , out s1Add)) return;
             // Находим количество продольных стержней
             var snumLong = Math.Truncate((b - a - a) / s) + 1;
@@ -841,11 +837,11 @@ namespace mpMeshes
             if (sadd > 0) snumLong += 1;
             // Находим количество поперечных стержней
             double snumTrans;
-            if (a1 == 0)
+            if (Math.Abs(a1) < _ep)
             {
                 snumTrans = Math.Truncate((l - a2 - a2) / s1) + 1;
             }
-            else if (a2 == 0)
+            else if (Math.Abs(a2) < _ep)
             {
                 snumTrans = Math.Truncate((l - a1 - a1) / s1) + 1;
             }
@@ -858,7 +854,7 @@ namespace mpMeshes
             // Считаем массу
             var mass = (snumLong * double.Parse(_firstArmatureMass[_firstArmature.IndexOf(d)]) * l / 1000) +
                 (snumTrans * double.Parse(_firstArmatureMass[_firstArmature.IndexOf(d1)]) * b / 1000);
-            this.TbFirstMassa.Text = (Math.Round(mass, int.Parse(this.TbFirstRound.Text))).ToString(CultureInfo.InvariantCulture);
+            TbFirstMassa.Text = (Math.Round(mass, int.Parse(TbFirstRound.Text))).ToString(CultureInfo.InvariantCulture);
         }
         // Возврат максимальной длины рулона в зависимости от диаметра продольной арматуры
         private static double GetMaxLength(string diam)
@@ -875,56 +871,54 @@ namespace mpMeshes
         // вставка значения в таблицу
         public void SetResultToTable()
         {
-            if (!string.IsNullOrEmpty(this.TbMessage.Text) ||
-                !string.IsNullOrEmpty(this.TbFirstOutputOneMessage.Text) ||
-                !string.IsNullOrEmpty(this.TbFirstOutputTwoMessage.Text) ||
-                string.IsNullOrEmpty(this.TbFirstMeshLength.Text) ||
-                string.IsNullOrEmpty(this.TbFirstMeshWidth.Text)
-                )
+            if (!string.IsNullOrEmpty(TbMessage.Text) ||
+                !string.IsNullOrEmpty(TbFirstOutputOneMessage.Text) ||
+                !string.IsNullOrEmpty(TbFirstOutputTwoMessage.Text) ||
+                string.IsNullOrEmpty(TbFirstMeshLength.Text) ||
+                string.IsNullOrEmpty(TbFirstMeshWidth.Text)
+            )
             {
-                if (MpQstWin.Show("Не все данные введены верно! Продолжить?"))
-                    goto FillTable;
-                return;
+                if (!ModPlusAPI.Windows.MessageBox.ShowYesNo("Не все данные введены верно! Продолжить?",
+                    MessageBoxIcon.Question))
+                    return;
             }
-            FillTable:
+            Hide();
+            try
             {
-                this.Hide();
-                try
-                {
-                    if (string.IsNullOrEmpty(this.TbFirsta.Text) & string.IsNullOrEmpty(this.TbFirstaOne.Text) &
-                        string.IsNullOrEmpty(this.TbFirstaTwo.Text))
-                        MpCadHelpers.InsertToAutoCad.AddSpecificationItemToTableRow(
-                            "",
-                            "ГОСТ 23279-85",
-                            "\\A1;" + this.TbxC.Text +
-                            "{\\H1x; \\H0.9x;\\S" + this.TbFirstd.Text + this.TbFirstdClass.Text + this.TbFirstdStep.Text +
-                            this.TbFirstdAddStep.Text +
-                            "/" + this.TbFirstdOne.Text + this.TbFirstdOneClass.Text + this.TbFirstdOneStep.Text +
-                            this.TbFirstdOneAddStep.Text +
-                            ";\\H1x; }" + this.TbFirstb.Text + this.TbFirstl.Text,
-                            this.TbFirstMassa.Text.Replace(',', '.').Replace('.', char.Parse(MpVars.MpSeparator)),
-                            "");
-                    else
-                        MpCadHelpers.InsertToAutoCad.AddSpecificationItemToTableRow(
-                            "",
-                            "ГОСТ 23279-85",
-                            "\\A1;" + this.TbxC.Text +
-                            "{\\H1x; \\H0.9x;\\S" + this.TbFirstd.Text + this.TbFirstdClass.Text + this.TbFirstdStep.Text +
-                            this.TbFirstdAddStep.Text +
-                            "/" + this.TbFirstdOne.Text + this.TbFirstdOneClass.Text + this.TbFirstdOneStep.Text +
-                            this.TbFirstdOneAddStep.Text +
-                            ";\\H1x; }" + this.TbFirstb.Text + this.TbFirstl.Text + " {\\H0.9x;\\S" +
-                            this.TbFirstaOne.Text + this.TbFirstaTwo.Text + "/" + this.TbFirsta.Text + ";}",
-                            this.TbFirstMassa.Text.Replace(',', '.').Replace('.', char.Parse(MpVars.MpSeparator)),
-                            "");
-                }
-                catch
-                {
-                }
-                finally
-                {
-                    this.Show();
-                }
+                if (string.IsNullOrEmpty(TbFirsta.Text) & string.IsNullOrEmpty(TbFirstaOne.Text) &
+                    string.IsNullOrEmpty(TbFirstaTwo.Text))
+                    ModPlus.Helpers.InsertToAutoCad.AddSpecificationItemToTableRow(
+                        "",
+                        "ГОСТ 23279-85",
+                        "\\A1;" + TbxC.Text +
+                        "{\\H1x; \\H0.9x;\\S" + TbFirstd.Text + TbFirstdClass.Text + TbFirstdStep.Text +
+                        TbFirstdAddStep.Text +
+                        "/" + TbFirstdOne.Text + TbFirstdOneClass.Text + TbFirstdOneStep.Text +
+                        TbFirstdOneAddStep.Text +
+                        ";\\H1x; }" + TbFirstb.Text + TbFirstl.Text,
+                        TbFirstMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
+                        "");
+                else
+                    ModPlus.Helpers.InsertToAutoCad.AddSpecificationItemToTableRow(
+                        "",
+                        "ГОСТ 23279-85",
+                        "\\A1;" + TbxC.Text +
+                        "{\\H1x; \\H0.9x;\\S" + TbFirstd.Text + TbFirstdClass.Text + TbFirstdStep.Text +
+                        TbFirstdAddStep.Text +
+                        "/" + TbFirstdOne.Text + TbFirstdOneClass.Text + TbFirstdOneStep.Text +
+                        TbFirstdOneAddStep.Text +
+                        ";\\H1x; }" + TbFirstb.Text + TbFirstl.Text + " {\\H0.9x;\\S" +
+                        TbFirstaOne.Text + TbFirstaTwo.Text + "/" + TbFirsta.Text + ";}",
+                        TbFirstMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
+                        "");
+            }
+            catch (Exception exception)
+            {
+                ExceptionBox.Show(exception);
+            }
+            finally
+            {
+                Show();
             }
         }
 
@@ -937,11 +931,14 @@ namespace mpMeshes
         {
             try
             {
-                this.TbFirstRound.Text = this.slider1.Value.ToString(CultureInfo.InvariantCulture);
+                TbFirstRound.Text = slider1.Value.ToString(CultureInfo.InvariantCulture);
                 // Масса
                 FirstGetMass();
             }
-            catch { }
+            catch 
+            {
+                // ignored
+            }
         }
         // Включение изображения
         private void BtFirstImage_Click(object sender, RoutedEventArgs e)
@@ -950,15 +947,15 @@ namespace mpMeshes
             {
                 var imagename = string.Empty;
 
-                if (this.CbFirstMeshType.SelectedIndex == 0)
+                if (CbFirstMeshType.SelectedIndex == 0)
                     imagename = "ГОСТ 23279-85_1";
-                else if (this.CbFirstMeshType.SelectedIndex == 1)
+                else if (CbFirstMeshType.SelectedIndex == 1)
                     imagename = "ГОСТ 23279-85_2";
-                else if (this.CbFirstMeshType.SelectedIndex == 2)
+                else if (CbFirstMeshType.SelectedIndex == 2)
                     imagename = "ГОСТ 23279-85_3";
-                else if (this.CbFirstMeshType.SelectedIndex == 3)
+                else if (CbFirstMeshType.SelectedIndex == 3)
                     imagename = "ГОСТ 23279-85_4";
-                else if (this.CbFirstMeshType.SelectedIndex == 4)
+                else if (CbFirstMeshType.SelectedIndex == 4)
                     imagename = "ГОСТ 23279-85_5";
 
 
@@ -977,7 +974,7 @@ namespace mpMeshes
             }
             catch (Exception ex)
             {
-                MpExWin.Show(ex);
+                ExceptionBox.Show(ex);
             }
         }
         /// <summary>
@@ -1009,100 +1006,99 @@ namespace mpMeshes
         private void SecondFill()
         {
             // Тип сетки по точности
-            this.CbSecondMeshType.Items.Add("Нормальной точности");
-            this.CbSecondMeshType.Items.Add("Повышенной точности");
-            this.CbSecondMeshType.SelectedIndex = 0;
+            CbSecondMeshType.Items.Add("Нормальной точности");
+            CbSecondMeshType.Items.Add("Повышенной точности");
+            CbSecondMeshType.SelectedIndex = 0;
             // Основной шаг сетки
-            this.CbSecondMainStep.Items.Add("100");
-            this.CbSecondMainStep.Items.Add("150");
-            this.CbSecondMainStep.Items.Add("200");
-            this.CbSecondMainStep.SelectedIndex = 0;
+            CbSecondMainStep.Items.Add("100");
+            CbSecondMainStep.Items.Add("150");
+            CbSecondMainStep.Items.Add("200");
+            CbSecondMainStep.SelectedIndex = 0;
         }
         // Выбор типа сетки по точности размеров
         private void CbSecondMeshType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.TbSecondType.Text = e.AddedItems[0].Equals("Нормальной точности") ? "5BpI" : "5ПBpI";
+            TbSecondType.Text = e.AddedItems[0].Equals("Нормальной точности") ? "5BpI" : "5ПBpI";
         }
         // Выбор основного шага сетки
         private void CbSecondMainStep_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems[0].Equals("100"))
             {
-                this.TbSecondS.Text = this.TbSecondSOne.Text = "100";
-                this.TbSecondLongitudinalOutput.Text = "50";
-                this.TbSecondTransverseSum.Text = "24";
-                this.TbSecondTransverseBreak.Text = "100x23";
+                TbSecondS.Text = TbSecondSOne.Text = "100";
+                TbSecondLongitudinalOutput.Text = "50";
+                TbSecondTransverseSum.Text = "24";
+                TbSecondTransverseBreak.Text = "100x23";
             }
             else if (e.AddedItems[0].Equals("150"))
             {
-                this.TbSecondS.Text = this.TbSecondSOne.Text = "150";
-                this.TbSecondLongitudinalOutput.Text = "75";
-                this.TbSecondTransverseSum.Text = "16";
-                this.TbSecondTransverseBreak.Text = "150x7+200+150x7";
+                TbSecondS.Text = TbSecondSOne.Text = "150";
+                TbSecondLongitudinalOutput.Text = "75";
+                TbSecondTransverseSum.Text = "16";
+                TbSecondTransverseBreak.Text = "150x7+200+150x7";
             }
             else if (e.AddedItems[0].Equals("200"))
             {
-                this.TbSecondS.Text = this.TbSecondSOne.Text = "200";
-                this.TbSecondLongitudinalOutput.Text = "100";
-                this.TbSecondTransverseSum.Text = "14";
-                this.TbSecondTransverseBreak.Text = "100+200x5+100+200x5+100";
+                TbSecondS.Text = TbSecondSOne.Text = "200";
+                TbSecondLongitudinalOutput.Text = "100";
+                TbSecondTransverseSum.Text = "14";
+                TbSecondTransverseBreak.Text = "100+200x5+100+200x5+100";
             }
             SetMeshLength();
         }
         // Подсчет массы сетки
         private void Massa()
         {
-            if (!string.IsNullOrEmpty(this.TbMessage.Text))
-            { this.TbSecondMassa.Text = string.Empty; return; }
+            if (!string.IsNullOrEmpty(TbMessage.Text))
+            { TbSecondMassa.Text = string.Empty; return; }
             // Масса продольных стержней
-            var massaLong = double.Parse(this.TbSecondTransverseSum.Text) * 0.144 *
-                double.Parse(this.TbSecondMeshLength.Text) / 1000;
+            var massaLong = double.Parse(TbSecondTransverseSum.Text) * 0.144 *
+                double.Parse(TbSecondMeshLength.Text) / 1000;
             ///////////////////////////////////////////
-            var length = double.Parse(this.TbSecondMeshLength.Text);
-            var twoOutputs = double.Parse(this.TbSecondLongitudinalOutput.Text) * 2;
-            var step = double.Parse(this.CbSecondMainStep.SelectedItem.ToString());
+            var length = double.Parse(TbSecondMeshLength.Text);
+            var twoOutputs = double.Parse(TbSecondLongitudinalOutput.Text) * 2;
+            var step = double.Parse(CbSecondMainStep.SelectedItem.ToString());
             var summ = Math.Truncate((length - twoOutputs) / step) + 1;
             // Масса поперечных стержней
             var massaTrans = summ * 0.144 * 2.350;
             // Результат
-            this.TbSecondMassa.Text = Math.Round(massaLong + massaTrans, int.Parse(this.TbSecondRound.Text)).ToString(CultureInfo.InvariantCulture);
+            TbSecondMassa.Text = Math.Round(massaLong + massaTrans, int.Parse(TbSecondRound.Text)).ToString(CultureInfo.InvariantCulture);
         }
         // Вставка результата
         private void BtSecondAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.TbMessage.Text) ||
-                string.IsNullOrEmpty(this.TbSecondMeshLength.Text) ||
-                string.IsNullOrEmpty(this.TbSecondMassa.Text)
-                )
+            if (!string.IsNullOrEmpty(TbMessage.Text) ||
+                string.IsNullOrEmpty(TbSecondMeshLength.Text) ||
+                string.IsNullOrEmpty(TbSecondMassa.Text)
+            )
             {
-                if (MpQstWin.Show("Не все данные введены верно! Продолжить?"))
-                    goto FillTable;
-                return;
+                if (!ModPlusAPI.Windows.MessageBox.ShowYesNo("Не все данные введены верно! Продолжить?",
+                    MessageBoxIcon.Question))
+                    return;
             }
-            FillTable:
+            Hide();
+            try
             {
-                this.Hide();
-                try
-                {
-                    MpCadHelpers.InsertToAutoCad.AddSpecificationItemToTableRow(
-                        "",
-                        "ГОСТ 8478-81",
-                        "\\A1;" + this.TbSecondType.Text +
-                        "{\\H1x; \\H0.9x;\\S" + this.TbSecondS.Text +
-                        "/" + this.TbSecondSOne.Text +
-                        ";\\H1x; }" + "2350  L=" + this.TbSecondMeshLength.Text,
-                        this.TbSecondMassa.Text.Replace(',', '.').Replace('.', char.Parse(MpVars.MpSeparator)),
-                        "");
-                }
-                catch
-                {
-                }
-                finally
-                {
-                    this.Show();
-                }
+                ModPlus.Helpers.InsertToAutoCad.AddSpecificationItemToTableRow(
+                    "",
+                    "ГОСТ 8478-81",
+                    "\\A1;" + TbSecondType.Text +
+                    "{\\H1x; \\H0.9x;\\S" + TbSecondS.Text +
+                    "/" + TbSecondSOne.Text +
+                    ";\\H1x; }" + "2350  L=" + TbSecondMeshLength.Text,
+                    TbSecondMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
+                    "");
+            }
+            catch (Exception exception)
+            {
+                ExceptionBox.Show(exception);
+            }
+            finally
+            {
+                Show();
             }
         }
+
         // Ввод длины сетки
         private void TbSecondMeshLength_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -1110,27 +1106,27 @@ namespace mpMeshes
             {
                 SetMeshLength();
             }
-            else this.TbSecondMeshLengthResult.Text = string.Empty;
+            else TbSecondMeshLengthResult.Text = string.Empty;
         }
         private void SetMeshLength()
         {
             // Проверка длины сетки
             // Проверяем на остаток от деления за минусом выпусков
-            if (!string.IsNullOrEmpty(this.TbSecondMeshLength.Text))
+            if (!string.IsNullOrEmpty(TbSecondMeshLength.Text))
             {
-                if (double.Parse(this.TbSecondMeshLength.Text) >
-                    (double.Parse(this.TbSecondLongitudinalOutput.Text) * 2) +
-                    double.Parse(this.CbSecondMainStep.SelectedItem.ToString()))
+                if (double.Parse(TbSecondMeshLength.Text) >
+                    (double.Parse(TbSecondLongitudinalOutput.Text) * 2) +
+                    double.Parse(CbSecondMainStep.SelectedItem.ToString()))
                 {
-                    var length = double.Parse(this.TbSecondMeshLength.Text);
-                    var twoOutputs = double.Parse(this.TbSecondLongitudinalOutput.Text) * 2;
-                    var step = double.Parse(this.CbSecondMainStep.SelectedItem.ToString());
+                    var length = double.Parse(TbSecondMeshLength.Text);
+                    var twoOutputs = double.Parse(TbSecondLongitudinalOutput.Text) * 2;
+                    var step = double.Parse(CbSecondMainStep.SelectedItem.ToString());
                     var ieeereminder = Math.IEEERemainder(length - twoOutputs, step);
-                    this.TbMessage.Text = ieeereminder != 0 ? "Неверное значение длины сетки!" : string.Empty;
+                    TbMessage.Text = Math.Abs(ieeereminder) > _ep ? "Неверное значение длины сетки!" : string.Empty;
                 }
                 else
-                    this.TbMessage.Text = "Неверное значение длины сетки!";
-                this.TbSecondMeshLengthResult.Text = this.TbSecondMeshLength.Text;
+                    TbMessage.Text = "Неверное значение длины сетки!";
+                TbSecondMeshLengthResult.Text = TbSecondMeshLength.Text;
                 Massa();
             }
         }
@@ -1139,11 +1135,14 @@ namespace mpMeshes
         {
             try
             {
-                this.TbSecondRound.Text = this.slider2.Value.ToString(CultureInfo.InvariantCulture);
+                TbSecondRound.Text = slider2.Value.ToString(CultureInfo.InvariantCulture);
                 // Масса
                 Massa();
             }
-            catch { }
+            catch
+            {
+                //ignored
+            }
         }
         // Включение изображения
         private void BtSecondImage_Click(object sender, RoutedEventArgs e)
@@ -1167,7 +1166,7 @@ namespace mpMeshes
             }
             catch (Exception ex)
             {
-                MpExWin.Show(ex);
+                ExceptionBox.Show(ex);
             }
         }
         #endregion
@@ -1188,7 +1187,7 @@ namespace mpMeshes
         // Первоначальное заполнение значений
         private void ThirdFill()
         {
-            FillComboBoxWithStringList(this.CbThirdMeshType, new List<string> {
+            FillComboBoxWithStringList(CbThirdMeshType, new List<string> {
                 "в одном направлении",
                 "в двух направлениях"
             });
@@ -1196,17 +1195,17 @@ namespace mpMeshes
         // Выбор типа сетки
         private void CbThirdMeshType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this.CbThirdMeshType.SelectedIndex == 0)
+            if (CbThirdMeshType.SelectedIndex == 0)
             {
-                this.TbThirdType.Text = "1C";
+                TbThirdType.Text = "1C";
                 // Заполняем значения ширины, т.к. от нее плясать будем
-                FillComboBoxWithStringList(this.CbThirdMeshWidth, _widths);
+                FillComboBoxWithStringList(CbThirdMeshWidth, _widths);
             }
-            else if (this.CbThirdMeshType.SelectedIndex == 1)
+            else if (CbThirdMeshType.SelectedIndex == 1)
             {
-                this.TbThirdType.Text = "2C";
+                TbThirdType.Text = "2C";
                 // Значения будем заносить "вручную", т.к. их немного
-                FillComboBoxWithStringList(this.CbThirdMeshLength, _lengths.Take(11).ToList());
+                FillComboBoxWithStringList(CbThirdMeshLength, _lengths.Take(11).ToList());
             }
         }
         // Подсчет массы сетки
@@ -1215,69 +1214,82 @@ namespace mpMeshes
             try
             {
                 string
-                    longDiam = this.CbThirdDiamsRatio.SelectedItem.ToString().
-                        Split('/').GetValue(0).ToString(),// Диаметр продольных стержней
-                    transDiam = this.CbThirdDiamsRatio.SelectedItem.ToString().
-                        Split('/').GetValue(1).ToString(),// Диаметр поперечных стержней
-                    width = this.CbThirdMeshWidth.SelectedItem.ToString(), // Ширина сетки
-                    length = this.CbThirdMeshLength.SelectedItem.ToString(), // Длина сетки
-                    longOutput = this.TbThirdLongitudinalOutput.Text, // Выпуск продольных стержней
-                    transOutput = this.TbThirdTransverseOutput.Text, // Выпуск поперечных стержней
+                    longDiam =
+                        CbThirdDiamsRatio.SelectedItem.ToString()
+                            .Split('/')
+                            .GetValue(0)
+                            .ToString(), // Диаметр продольных стержней
+                    transDiam =
+                        CbThirdDiamsRatio.SelectedItem.ToString()
+                            .Split('/')
+                            .GetValue(1)
+                            .ToString(), // Диаметр поперечных стержней
+                    width = CbThirdMeshWidth.SelectedItem.ToString(), // Ширина сетки
+                    length = CbThirdMeshLength.SelectedItem.ToString(), // Длина сетки
+                    longOutput = TbThirdLongitudinalOutput.Text, // Выпуск продольных стержней
+                    transOutput = TbThirdTransverseOutput.Text, // Выпуск поперечных стержней
                     n = "200", // Шаг продольных стержней
                     m = "200" // Шаг поперечных стержней
                     ;
-                if (this.CbThirdMeshType.SelectedIndex == 0)// с рабочей арм. в 1 направл.
+                if (CbThirdMeshType.SelectedIndex == 0) // с рабочей арм. в 1 направл.
                     m = "600";
-                this.TbThirdLongitudinalStep.Text = n;
-                this.TbThirdTransverseStep.Text = m;
+                TbThirdLongitudinalStep.Text = n;
+                TbThirdTransverseStep.Text = m;
                 // Количество продольных стержней
-                var longSum = Math.Truncate((double.Parse(width) - (double.Parse(transOutput) * 2)) / double.Parse(n)) + 1;
+                var longSum = Math.Truncate((double.Parse(width) - (double.Parse(transOutput) * 2)) / double.Parse(n)) +
+                              1;
                 // Количество поперечных стержней стержней
-                var transSum = Math.Truncate((double.Parse(length) - (double.Parse(longOutput) * 2)) / double.Parse(m)) + 1;
+                var transSum =
+                    Math.Truncate((double.Parse(length) - (double.Parse(longOutput) * 2)) / double.Parse(m)) + 1;
                 // Масса продольных стержней
                 var longMassa = double.Parse(length) * longSum *
-                    double.Parse(_thirdArmatureMass[_thirdArmature.IndexOf(longDiam)]) / 1000;
+                                double.Parse(_thirdArmatureMass[_thirdArmature.IndexOf(longDiam)]) / 1000;
                 // Масса поперечных стержней
                 var transMassa = double.Parse(width) * transSum *
-                    double.Parse(_thirdArmatureMass[_thirdArmature.IndexOf(transDiam)]) / 1000;
+                                 double.Parse(_thirdArmatureMass[_thirdArmature.IndexOf(transDiam)]) / 1000;
                 // Общая масса
-                this.TbThirdMassa.Text = Math.Round(longMassa + transMassa, int.Parse(this.TbThirdRound.Text)).ToString(CultureInfo.InvariantCulture);
+                TbThirdMassa.Text = Math.Round(longMassa + transMassa, int.Parse(TbThirdRound.Text))
+                    .ToString(CultureInfo.InvariantCulture);
             }
-            catch { }
+            catch
+            {
+                //ignored
+            }
         }
         // Вставка результата
         private void BtThirdAdd_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            Hide();
             try
             {
-                MpCadHelpers.InsertToAutoCad.AddSpecificationItemToTableRow(
+                ModPlus.Helpers.InsertToAutoCad.AddSpecificationItemToTableRow(
                     "",
                     "Серия 1.410-3 выпуск 1",
-                    "\\A1;" + this.TbThirdType.Text +
-                    "{\\H1x; \\H0.9x;\\S" + this.TbThirdLongDiam.Text +
-                    "/" + this.TbThirdTransDiam.Text +
-                    ";\\H1x; }" + this.TbThirdLength.Text + "x" + this.TbThirdWidth.Text,
-                    this.TbThirdMassa.Text.Replace(',', '.').Replace('.', char.Parse(MpVars.MpSeparator)),
+                    "\\A1;" + TbThirdType.Text +
+                    "{\\H1x; \\H0.9x;\\S" + TbThirdLongDiam.Text +
+                    "/" + TbThirdTransDiam.Text +
+                    ";\\H1x; }" + TbThirdLength.Text + "x" + TbThirdWidth.Text,
+                    TbThirdMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
                     "");
             }
-            catch
+            catch (Exception exception)
             {
+                ExceptionBox.Show(exception);
             }
             finally
             {
-                this.Show();
+                Show();
             }
         }
         // Обработка выбора длины
         private void CbThirdMeshLength_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this.CbThirdMeshLength.Items.Count == 0) return;
+            if (CbThirdMeshLength.Items.Count == 0) return;
 
             var length = e.AddedItems[0].ToString();
-            if (this.CbThirdMeshType.SelectedIndex == 0)// с рабочей арм. в 1 направл.
+            if (CbThirdMeshType.SelectedIndex == 0)// с рабочей арм. в 1 направл.
             {
-                this.TbThirdLongitudinalOutput.Text = _outputs[_lengths.IndexOf(length)];
+                TbThirdLongitudinalOutput.Text = _outputs[_lengths.IndexOf(length)];
             }
             else // с рабочей арм. в 2 напр.
             {
@@ -1285,87 +1297,87 @@ namespace mpMeshes
                 switch (length)
                 {
                     case "1150":
-                        FillComboBoxWithStringList(this.CbThirdMeshWidth, new List<string> { "1150" });
-                        this.TbThirdLongitudinalOutput.Text = "75";
+                        FillComboBoxWithStringList(CbThirdMeshWidth, new List<string> { "1150" });
+                        TbThirdLongitudinalOutput.Text = "75";
                         break;
                     case "1450":
-                        FillComboBoxWithStringList(this.CbThirdMeshWidth, new List<string> { "1150", "1450" });
-                        this.TbThirdLongitudinalOutput.Text = "25";
+                        FillComboBoxWithStringList(CbThirdMeshWidth, new List<string> { "1150", "1450" });
+                        TbThirdLongitudinalOutput.Text = "25";
                         break;
                     case "1750":
-                        FillComboBoxWithStringList(this.CbThirdMeshWidth, new List<string> { "1450", "1750" });
-                        this.TbThirdLongitudinalOutput.Text = "75";
+                        FillComboBoxWithStringList(CbThirdMeshWidth, new List<string> { "1450", "1750" });
+                        TbThirdLongitudinalOutput.Text = "75";
                         break;
                     case "2050":
-                        FillComboBoxWithStringList(this.CbThirdMeshWidth, new List<string> { "1750", "2050" });
-                        this.TbThirdLongitudinalOutput.Text = "25";
+                        FillComboBoxWithStringList(CbThirdMeshWidth, new List<string> { "1750", "2050" });
+                        TbThirdLongitudinalOutput.Text = "25";
                         break;
                     case "2350":
-                        FillComboBoxWithStringList(this.CbThirdMeshWidth, new List<string> { "1750", "2050", "2350" });
-                        this.TbThirdLongitudinalOutput.Text = "75";
+                        FillComboBoxWithStringList(CbThirdMeshWidth, new List<string> { "1750", "2050", "2350" });
+                        TbThirdLongitudinalOutput.Text = "75";
                         break;
                     case "2650":
-                        FillComboBoxWithStringList(this.CbThirdMeshWidth, new List<string> { "2350", "2650" });
-                        this.TbThirdLongitudinalOutput.Text = "25";
+                        FillComboBoxWithStringList(CbThirdMeshWidth, new List<string> { "2350", "2650" });
+                        TbThirdLongitudinalOutput.Text = "25";
                         break;
                     case "2950":
-                        FillComboBoxWithStringList(this.CbThirdMeshWidth, new List<string> { "2350", "2650", "2950" });
-                        this.TbThirdLongitudinalOutput.Text = "75";
+                        FillComboBoxWithStringList(CbThirdMeshWidth, new List<string> { "2350", "2650", "2950" });
+                        TbThirdLongitudinalOutput.Text = "75";
                         break;
                     case "3250":
-                        FillComboBoxWithStringList(this.CbThirdMeshWidth, new List<string> { "2650", "2950" });
-                        this.TbThirdLongitudinalOutput.Text = "25";
+                        FillComboBoxWithStringList(CbThirdMeshWidth, new List<string> { "2650", "2950" });
+                        TbThirdLongitudinalOutput.Text = "25";
                         break;
                     case "3550":
-                        FillComboBoxWithStringList(this.CbThirdMeshWidth, new List<string> { "2950" });
-                        this.TbThirdLongitudinalOutput.Text = "75";
+                        FillComboBoxWithStringList(CbThirdMeshWidth, new List<string> { "2950" });
+                        TbThirdLongitudinalOutput.Text = "75";
                         break;
                     case "3850":
-                        FillComboBoxWithStringList(this.CbThirdMeshWidth, new List<string> { "2950" });
-                        this.TbThirdLongitudinalOutput.Text = "25";
+                        FillComboBoxWithStringList(CbThirdMeshWidth, new List<string> { "2950" });
+                        TbThirdLongitudinalOutput.Text = "25";
                         break;
                     case "4150":
-                        FillComboBoxWithStringList(this.CbThirdMeshWidth, new List<string> { "2950" });
-                        this.TbThirdLongitudinalOutput.Text = "75";
+                        FillComboBoxWithStringList(CbThirdMeshWidth, new List<string> { "2950" });
+                        TbThirdLongitudinalOutput.Text = "75";
                         break;
                 }
             }
             // Записываем выбранное значение длины, поделив на 10
-            this.TbThirdLength.Text = length.Substring(0, length.Length - 1);
+            TbThirdLength.Text = length.Substring(0, length.Length - 1);
             // Диаметры стержней
             ThirdFillDiams();
         }
         // Обработка выбора ширины
         private void CbThirdMeshWidth_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this.CbThirdMeshWidth.Items.Count == 0) return;
+            if (CbThirdMeshWidth.Items.Count == 0) return;
 
             string width = e.AddedItems[0].ToString();
-            if (this.CbThirdMeshType.SelectedIndex == 0)// с рабочей арм. в 1 направл.
+            if (CbThirdMeshType.SelectedIndex == 0)// с рабочей арм. в 1 направл.
             {
-                this.TbThirdTransverseOutput.Text = "25";
+                TbThirdTransverseOutput.Text = "25";
 
                 if (width.Equals("850") || width.Equals("1050") ||
                     width.Equals("1250") || width.Equals("1450"))
-                    FillComboBoxWithStringList(this.CbThirdMeshLength, _lengths.GetRange(1, 20));
+                    FillComboBoxWithStringList(CbThirdMeshLength, _lengths.GetRange(1, 20));
                 else
-                    FillComboBoxWithStringList(this.CbThirdMeshLength, _lengths.GetRange(1, 26));
+                    FillComboBoxWithStringList(CbThirdMeshLength, _lengths.GetRange(1, 26));
             }
             else // с рабочей арм. в 2 напр.
             {
                 switch (width)
                 {
-                    case "1150": this.TbThirdTransverseOutput.Text = "75"; break;
-                    case "1450": this.TbThirdTransverseOutput.Text = "25"; break;
-                    case "1750": this.TbThirdTransverseOutput.Text = "75"; break;
-                    case "2050": this.TbThirdTransverseOutput.Text = "25"; break;
-                    case "2350": this.TbThirdTransverseOutput.Text = "75"; break;
-                    case "2650": this.TbThirdTransverseOutput.Text = "25"; break;
-                    case "2950": this.TbThirdTransverseOutput.Text = "75"; break;
+                    case "1150": TbThirdTransverseOutput.Text = "75"; break;
+                    case "1450": TbThirdTransverseOutput.Text = "25"; break;
+                    case "1750": TbThirdTransverseOutput.Text = "75"; break;
+                    case "2050": TbThirdTransverseOutput.Text = "25"; break;
+                    case "2350": TbThirdTransverseOutput.Text = "75"; break;
+                    case "2650": TbThirdTransverseOutput.Text = "25"; break;
+                    case "2950": TbThirdTransverseOutput.Text = "75"; break;
                 }
             }
             // Записываем выбранное значение длины, поделив на 10
-            this.TbThirdWidth.Text = width.Substring(0, width.Length - 1);
+            TbThirdWidth.Text = width.Substring(0, width.Length - 1);
             // Диаметры стержней
             ThirdFillDiams();
             // Масса
@@ -1374,90 +1386,90 @@ namespace mpMeshes
         // Заполнение списков диаметров
         private void ThirdFillDiams()
         {
-            if (this.CbThirdMeshLength.Items.Count == 0 & this.CbThirdMeshWidth.Items.Count == 0) return;
-            string length = this.CbThirdMeshLength.SelectedItem.ToString(),
-                width = this.CbThirdMeshWidth.SelectedItem.ToString();
+            if (CbThirdMeshLength.Items.Count == 0 & CbThirdMeshWidth.Items.Count == 0) return;
+            string length = CbThirdMeshLength.SelectedItem.ToString(),
+                width = CbThirdMeshWidth.SelectedItem.ToString();
 
-            if (this.CbThirdMeshType.SelectedIndex == 0)// с рабочей арм. в 1 направл.
+            if (CbThirdMeshType.SelectedIndex == 0)// с рабочей арм. в 1 направл.
             {
                 switch (width)
                 {
                     case "850":
-                        FillComboBoxWithStringList(this.CbThirdDiamsRatio,
+                        FillComboBoxWithStringList(CbThirdDiamsRatio,
                 new List<string> { "10/6", "12/6", "14/6", "16/6", "18/6", "20/6", "22/6", "25/8", "28/8", "32/8" }); break;
                     case "1050":
-                        FillComboBoxWithStringList(this.CbThirdDiamsRatio,
+                        FillComboBoxWithStringList(CbThirdDiamsRatio,
                new List<string> { "10/6", "12/6", "14/6", "16/6", "18/6", "20/8", "22/8", "25/8", "28/8", "32/10" }); break;
                     case "1250":
-                        FillComboBoxWithStringList(this.CbThirdDiamsRatio,
+                        FillComboBoxWithStringList(CbThirdDiamsRatio,
                new List<string> { "10/6", "12/6", "14/6", "16/6", "18/8", "20/8", "22/8", "25/8", "28/10", "32/10" }); break;
                     case "1450":
-                        FillComboBoxWithStringList(this.CbThirdDiamsRatio,
+                        FillComboBoxWithStringList(CbThirdDiamsRatio,
                new List<string> { "10/6", "12/6", "14/6", "16/8", "18/8", "20/8", "22/10", "25/10", "28/10", "32/12" }); break;
                     case "1650":
-                        FillComboBoxWithStringList(this.CbThirdDiamsRatio,
+                        FillComboBoxWithStringList(CbThirdDiamsRatio,
                new List<string> { "10/6", "12/6", "14/8", "16/8", "18/8", "20/10", "22/10", "25/10", "28/12", "32/12" }); break;
                     case "1850":
-                        FillComboBoxWithStringList(this.CbThirdDiamsRatio,
+                        FillComboBoxWithStringList(CbThirdDiamsRatio,
                new List<string> { "10/6", "12/8", "14/8", "16/8", "18/10", "20/10", "22/10", "25/12", "28/12", "32/14" }); break;
                     case "2050":
-                        FillComboBoxWithStringList(this.CbThirdDiamsRatio,
+                        FillComboBoxWithStringList(CbThirdDiamsRatio,
                new List<string> { "10/8", "12/8", "14/8", "16/10", "18/10", "20/10", "22/12", "25/12", "28/14", "32/14" }); break;
                     case "2250":
-                        FillComboBoxWithStringList(this.CbThirdDiamsRatio,
+                        FillComboBoxWithStringList(CbThirdDiamsRatio,
                new List<string> { "10/8", "12/8", "14/8", "16/10", "18/10", "20/10", "22/12", "25/12", "28/14", "32/14" }); break;
                     case "2450":
-                        FillComboBoxWithStringList(this.CbThirdDiamsRatio,
+                        FillComboBoxWithStringList(CbThirdDiamsRatio,
                new List<string> { "10/8", "12/8", "14/8", "16/10", "18/10", "20/10", "22/12", "25/12", "28/14", "32/14" }); break;
                     case "2650":
-                        FillComboBoxWithStringList(this.CbThirdDiamsRatio,
+                        FillComboBoxWithStringList(CbThirdDiamsRatio,
                new List<string> { "10/8", "12/8", "14/8", "16/10", "18/10", "20/10", "22/12", "25/12", "28/14", "32/14" }); break;
                     case "2850":
-                        FillComboBoxWithStringList(this.CbThirdDiamsRatio,
+                        FillComboBoxWithStringList(CbThirdDiamsRatio,
            new List<string> { "10/8", "12/8", "14/8", "16/10", "18/10", "20/10", "22/12", "25/12", "28/14", "32/14" }); break;
                 }
             }
             else // с рабочей арм. в 2 напр.
             {
                 if (length.Equals("1150") & width.Equals("1150"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12" });
                 else if (length.Equals("1450") & width.Equals("1150"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12" });
                 else if (length.Equals("1450") & width.Equals("1450"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12" });
                 else if (length.Equals("1750") & width.Equals("1450"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12" });
                 else if (length.Equals("1750") & width.Equals("1750"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14" });
                 else if (length.Equals("2050") & width.Equals("1750"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14" });
                 else if (length.Equals("2350") & width.Equals("1750"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14" });
                 else if (length.Equals("2050") & width.Equals("2050"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14" });
                 else if (length.Equals("2350") & width.Equals("2050"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14" });
-                else if (length.Equals("2650") & width.Equals("2350") & this.TbThirdTransverseOutput.Text.Equals("25"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14", "18/14" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14" });
+                else if (length.Equals("2650") & width.Equals("2350") & TbThirdTransverseOutput.Text.Equals("25"))
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14", "18/14" });
                 else if (length.Equals("2350") & width.Equals("2350"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14" });
-                else if (length.Equals("2650") & width.Equals("2350") & this.TbThirdTransverseOutput.Text.Equals("75"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14", "18/14", "20/14" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14" });
+                else if (length.Equals("2650") & width.Equals("2350") & TbThirdTransverseOutput.Text.Equals("75"))
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14", "18/14", "20/14" });
                 else if (length.Equals("2950") & width.Equals("2350"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14", "18/14", "20/14" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14", "18/14", "20/14" });
                 else if (length.Equals("2650") & width.Equals("2650"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14" });
                 else if (length.Equals("2950") & width.Equals("2650"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14", "18/14", "20/14" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14", "18/14", "20/14" });
                 else if (length.Equals("3250") & width.Equals("2650"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14", "18/14", "20/14" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14", "18/14", "20/14" });
                 else if (length.Equals("2950") & width.Equals("2950"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14" });
                 else if (length.Equals("3250") & width.Equals("2950") ||
                     length.Equals("3550") & width.Equals("2950") ||
                     length.Equals("3850") & width.Equals("2950") ||
                     length.Equals("4150") & width.Equals("2950"))
-                    FillComboBoxWithStringList(this.CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14", "18/14", "20/14" });
+                    FillComboBoxWithStringList(CbThirdDiamsRatio, new List<string> { "10/10", "12/12", "14/12", "14/14", "16/14", "18/14", "20/14" });
             }
             // Масса
             ThirdMassa();
@@ -1465,10 +1477,10 @@ namespace mpMeshes
         // Выбор отношения диаметров
         private void CbThirdDiamsRatio_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this.CbThirdDiamsRatio.Items.Count == 0) return;
+            if (CbThirdDiamsRatio.Items.Count == 0) return;
             string ratio = e.AddedItems[0].ToString();
-            this.TbThirdLongDiam.Text = ratio.Split('/').GetValue(0) + "AIII";
-            this.TbThirdTransDiam.Text = ratio.Split('/').GetValue(1) + "AIII";
+            TbThirdLongDiam.Text = ratio.Split('/').GetValue(0) + "AIII";
+            TbThirdTransDiam.Text = ratio.Split('/').GetValue(1) + "AIII";
             // Масса
             ThirdMassa();
         }
@@ -1477,11 +1489,14 @@ namespace mpMeshes
         {
             try
             {
-                this.TbThirdRound.Text = this.slider3.Value.ToString(CultureInfo.InvariantCulture);
+                TbThirdRound.Text = slider3.Value.ToString(CultureInfo.InvariantCulture);
                 // Масса
                 ThirdMassa();
             }
-            catch { }
+            catch 
+            {
+                // ignored
+            }
         }
         // Включение изображения
         private void BtThirdImage_Click(object sender, RoutedEventArgs e)
@@ -1489,9 +1504,9 @@ namespace mpMeshes
             try
             {
                 var imagename = string.Empty;
-                if (this.CbThirdMeshType.SelectedIndex == 0)
+                if (CbThirdMeshType.SelectedIndex == 0)
                     imagename = "Серия 1.410-3 в.1_1";
-                else if (this.CbThirdMeshType.SelectedIndex == 1)
+                else if (CbThirdMeshType.SelectedIndex == 1)
                     imagename = "Серия 1.410-3 в.1_2";
 
                 var imgWin = new ShowImageWindow
@@ -1509,7 +1524,7 @@ namespace mpMeshes
             }
             catch (Exception ex)
             {
-                MpExWin.Show(ex);
+                ExceptionBox.Show(ex);
             }
         }
         #endregion
@@ -1548,20 +1563,22 @@ namespace mpMeshes
         [CommandMethod("ModPlus", "mpMeshes", CommandFlags.Modal)]
         public void Main()
         {
-            if (this._window == null)
+            Statistic.SendCommandStarting(new Interface());
+
+            if (_window == null)
             {
-                this._window = new MpMeshes();
-                this._window.Closed += this.win_Closed;
+                _window = new MpMeshes();
+                _window.Closed += win_Closed;
             }
-            if (this._window.IsLoaded)
-                this._window.Activate();
+            if (_window.IsLoaded)
+                _window.Activate();
             else
-                AcApp.ShowModelessWindow(AcApp.MainWindow.Handle, this._window);
+                AcApp.ShowModelessWindow(AcApp.MainWindow.Handle, _window);
         }
 
         private void win_Closed(object sender, EventArgs e)
         {
-            this._window = null;
+            _window = null;
             Utils.SetFocusToDwgView();
         }
     }
