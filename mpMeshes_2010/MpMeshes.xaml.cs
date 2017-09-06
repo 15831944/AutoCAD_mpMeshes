@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Autodesk.AutoCAD.Internal;
 using Autodesk.AutoCAD.Runtime;
+using ModPlus.Helpers;
 using ModPlusAPI;
 using ModPlusAPI.Windows;
 using ModPlusAPI.Windows.Helpers;
@@ -502,13 +503,13 @@ namespace mpMeshes
                     break;
                 // Для типа 2,3 - кратно 25
                 case "2":
-                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep 
-                        ? "Значение выпуска должно быть кратно 25" 
+                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep
+                        ? "Значение выпуска должно быть кратно 25"
                         : string.Empty;
                     break;
                 case "3":
-                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep 
-                        ? "Значение выпуска должно быть кратно 25" 
+                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep
+                        ? "Значение выпуска должно быть кратно 25"
                         : string.Empty;
                     break;
                 // Для 4,5 - от 15, 20, 30, а также от 25 до 100 кратно 100
@@ -887,19 +888,18 @@ namespace mpMeshes
             {
                 if (string.IsNullOrEmpty(TbFirsta.Text) & string.IsNullOrEmpty(TbFirstaOne.Text) &
                     string.IsNullOrEmpty(TbFirstaTwo.Text))
-                    ModPlus.Helpers.InsertToAutoCad.AddSpecificationItemToTableRow(
+                {
+                    InsertToAutoCad.AddSpecificationItemToTableRow(new InsertToAutoCad.SpecificationItemForTable(
                         "",
                         "ГОСТ 23279-85",
-                        "\\A1;" + TbxC.Text +
-                        "{\\H1x; \\H0.9x;\\S" + TbFirstd.Text + TbFirstdClass.Text + TbFirstdStep.Text +
-                        TbFirstdAddStep.Text +
-                        "/" + TbFirstdOne.Text + TbFirstdOneClass.Text + TbFirstdOneStep.Text +
-                        TbFirstdOneAddStep.Text +
-                        ";\\H1x; }" + TbFirstb.Text + TbFirstl.Text,
+                        "\\A1;" + TbxC.Text + "{\\H1x; \\H0.9x;\\S" + TbFirstd.Text + TbFirstdClass.Text + TbFirstdStep.Text + TbFirstdAddStep.Text +
+                        "/" + TbFirstdOne.Text + TbFirstdOneClass.Text + TbFirstdOneStep.Text + TbFirstdOneAddStep.Text + ";\\H1x; }" + TbFirstb.Text + TbFirstl.Text,
                         TbFirstMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
-                        "");
+                        "",""));
+                }
                 else
-                    ModPlus.Helpers.InsertToAutoCad.AddSpecificationItemToTableRow(
+                {
+                    InsertToAutoCad.AddSpecificationItemToTableRow(new InsertToAutoCad.SpecificationItemForTable(
                         "",
                         "ГОСТ 23279-85",
                         "\\A1;" + TbxC.Text +
@@ -910,7 +910,8 @@ namespace mpMeshes
                         ";\\H1x; }" + TbFirstb.Text + TbFirstl.Text + " {\\H0.9x;\\S" +
                         TbFirstaOne.Text + TbFirstaTwo.Text + "/" + TbFirsta.Text + ";}",
                         TbFirstMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
-                        "");
+                        "",""));
+                }
             }
             catch (Exception exception)
             {
@@ -935,7 +936,7 @@ namespace mpMeshes
                 // Масса
                 FirstGetMass();
             }
-            catch 
+            catch
             {
                 // ignored
             }
@@ -1079,7 +1080,7 @@ namespace mpMeshes
             Hide();
             try
             {
-                ModPlus.Helpers.InsertToAutoCad.AddSpecificationItemToTableRow(
+                InsertToAutoCad.AddSpecificationItemToTableRow(new InsertToAutoCad.SpecificationItemForTable(
                     "",
                     "ГОСТ 8478-81",
                     "\\A1;" + TbSecondType.Text +
@@ -1087,7 +1088,7 @@ namespace mpMeshes
                     "/" + TbSecondSOne.Text +
                     ";\\H1x; }" + "2350  L=" + TbSecondMeshLength.Text,
                     TbSecondMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
-                    "");
+                    "",""));
             }
             catch (Exception exception)
             {
@@ -1262,7 +1263,7 @@ namespace mpMeshes
             Hide();
             try
             {
-                ModPlus.Helpers.InsertToAutoCad.AddSpecificationItemToTableRow(
+                InsertToAutoCad.AddSpecificationItemToTableRow(new InsertToAutoCad.SpecificationItemForTable(
                     "",
                     "Серия 1.410-3 выпуск 1",
                     "\\A1;" + TbThirdType.Text +
@@ -1270,7 +1271,7 @@ namespace mpMeshes
                     "/" + TbThirdTransDiam.Text +
                     ";\\H1x; }" + TbThirdLength.Text + "x" + TbThirdWidth.Text,
                     TbThirdMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
-                    "");
+                    "",""));
             }
             catch (Exception exception)
             {
@@ -1493,7 +1494,7 @@ namespace mpMeshes
                 // Масса
                 ThirdMassa();
             }
-            catch 
+            catch
             {
                 // ignored
             }

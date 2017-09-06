@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ModPlusAPI.Interfaces;
 
 namespace mpMeshes
@@ -8,7 +9,9 @@ namespace mpMeshes
         public SupportedProduct SupportedProduct => SupportedProduct.AutoCAD;
         public string Name => "mpMeshes";
         public string AvailProductExternalVersion => "2017";
-        public string ClassName => string.Empty;
+        public string FullClassName => string.Empty;
+        public string AppFullClassName => string.Empty;
+        public Guid AddInId => Guid.Empty;
         public string LName => "Сетки";
         public string Description => "Подбор и расчет массы арматурных сеток согласно нормативных документов";
         public string Author => "Пекшев Александр aka Modis";
