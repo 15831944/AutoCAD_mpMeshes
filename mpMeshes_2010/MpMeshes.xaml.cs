@@ -24,16 +24,16 @@ namespace mpMeshes
 {
     public partial class MpMeshes
     {
+        private const string LangItem = "mpMeshes";
+
         private double _ep = 0.001;
-        /// <summary>
-        /// Инициализация окна
-        /// </summary>
+        /// <summary>Инициализация окна</summary>
         public MpMeshes()
         {
             InitializeComponent();
-            this.OnWindowStartUp();
+            Title = ModPlusAPI.Language.GetItem(LangItem, "h1");
             //
-            LabelName.Content = "Сетки арматурные сварные для железобетонных конструкций и изделий";
+            LabelName.Content = ModPlusAPI.Language.GetItem(LangItem, "h35");
             // Заполняем значения первой вкладки
             FillFirstTab();
             // second
@@ -44,17 +44,17 @@ namespace mpMeshes
         #region MainWindow
         private void TabItem_GotFocus(object sender, RoutedEventArgs e)
         {
-            LabelName.Content = "Сетки арматурные сварные для железобетонных конструкций и изделий";
+            LabelName.Content = ModPlusAPI.Language.GetItem(LangItem, "h35");
         }
 
         private void TabItem_GotFocus_1(object sender, RoutedEventArgs e)
         {
-            LabelName.Content = "Сетки сварные для железобетонных конструкций";
+            LabelName.Content = ModPlusAPI.Language.GetItem(LangItem, "h36");
         }
 
         private void TabItem_GotFocus_2(object sender, RoutedEventArgs e)
         {
-            LabelName.Content = "Выпуск 1. Сетки с рабочей арматурой диаметром от 10 до 32 мм";
+            LabelName.Content = ModPlusAPI.Language.GetItem(LangItem, "h37");
         }
 
         private void Window_MouseLeave(object sender, MouseEventArgs e)
@@ -77,8 +77,7 @@ namespace mpMeshes
         // Ввод в текстовое поле только чисел
         public void TextBoxOnlyNumbers_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            short num;
-            if (!short.TryParse(e.Text, out num))
+            if (!short.TryParse(e.Text, out _))
             {
                 e.Handled = true;
             }
@@ -116,7 +115,7 @@ namespace mpMeshes
             {
                 ChFirstRoll.IsChecked = false;
                 ChFirstRoll.Visibility = Visibility.Collapsed;
-                MeshKind.Text = "Вид сетки: Тяжелые";
+                MeshKind.Text = ModPlusAPI.Language.GetItem(LangItem, "h38");
                 _minWidthLimit = 650; _maxWidthLimit = 3050;
                 FirstWidthLimit.Text = "(От 650 до 3050)";
                 _minLengthLimit = 850; _maxLengthLimit = 9000;
@@ -132,7 +131,7 @@ namespace mpMeshes
             {
                 ChFirstRoll.IsChecked = false;
                 ChFirstRoll.Visibility = Visibility.Collapsed;
-                MeshKind.Text = "Вид сетки: Тяжелые";
+                MeshKind.Text = ModPlusAPI.Language.GetItem(LangItem, "h38");
                 _minWidthLimit = 650; _maxWidthLimit = 3050;
                 FirstWidthLimit.Text = "(От 650 до 3050)";
                 _minLengthLimit = 850; _maxLengthLimit = 5950;
@@ -148,7 +147,7 @@ namespace mpMeshes
             {
                 ChFirstRoll.IsChecked = false;
                 ChFirstRoll.Visibility = Visibility.Collapsed;
-                MeshKind.Text = "Вид сетки: Тяжелые";
+                MeshKind.Text = ModPlusAPI.Language.GetItem(LangItem, "h38");
                 _minWidthLimit = 850; _maxWidthLimit = 3050;
                 FirstWidthLimit.Text = "(От 650 до 3050)";
                 _minLengthLimit = 850; _maxLengthLimit = 6250;
@@ -163,7 +162,7 @@ namespace mpMeshes
             else if (e.AddedItems[0].Equals("4"))
             {
                 ChFirstRoll.Visibility = Visibility.Visible;
-                MeshKind.Text = "Вид сетки: Легкие";
+                MeshKind.Text = ModPlusAPI.Language.GetItem(LangItem, "h39");
                 _minWidthLimit = 650; _maxWidthLimit = 3800;
                 FirstWidthLimit.Text = "(От 650 до 3800)";
                 _minLengthLimit = 850; _maxLengthLimit = 9000;
@@ -178,7 +177,7 @@ namespace mpMeshes
             else if (e.AddedItems[0].Equals("5"))
             {
                 ChFirstRoll.Visibility = Visibility.Visible;
-                MeshKind.Text = "Вид сетки: Легкие";
+                MeshKind.Text = ModPlusAPI.Language.GetItem(LangItem, "h39");
                 _minWidthLimit = 650; _maxWidthLimit = 3800;
                 FirstWidthLimit.Text = "(От 650 до 3800)";
                 _minLengthLimit = 3950; _maxLengthLimit = 9000;
@@ -201,14 +200,14 @@ namespace mpMeshes
             {
                 TbxC.Text = TbxC.Text + "р";
                 _maxLengthLimit = GetMaxLength(CbFirstLongitudinal.SelectedItem.ToString());
-                FirstLengthLimit.Text = "(От 850 до длины рулона)";
+                FirstLengthLimit.Text = ModPlusAPI.Language.GetItem(LangItem, "h40");
                 LengthChange();
             }
             else if (CbFirstMeshType.SelectedItem.Equals("5"))
             {
                 TbxC.Text = TbxC.Text + "р";
                 _maxLengthLimit = GetMaxLength(CbFirstLongitudinal.SelectedItem.ToString());
-                FirstLengthLimit.Text = "(От 3950 до длины рулона)";
+                FirstLengthLimit.Text = ModPlusAPI.Language.GetItem(LangItem, "h41");
                 LengthChange();
             }
         }
@@ -219,14 +218,14 @@ namespace mpMeshes
             {
                 TbxC.Text = TbxC.Text.TrimEnd('р');
                 _minLengthLimit = 850; _maxLengthLimit = 9000;
-                FirstLengthLimit.Text = "(От 850 до 9000)";
+                FirstLengthLimit.Text = ModPlusAPI.Language.GetItem(LangItem, "h42");
                 LengthChange();
             }
             if (CbFirstMeshType.SelectedItem.Equals("5"))
             {
                 TbxC.Text = TbxC.Text.TrimEnd('р');
                 _minLengthLimit = 3950; _maxLengthLimit = 9000;
-                FirstLengthLimit.Text = "(От 3950 до 9000)";
+                FirstLengthLimit.Text = ModPlusAPI.Language.GetItem(LangItem, "h43");
                 LengthChange();
             }
         }
@@ -311,12 +310,16 @@ namespace mpMeshes
                     double.Parse(CbFirstTransverse.SelectedItem.ToString()))
                 {
                     TbMessage.Text = double.Parse(CbFirstTransverse.SelectedItem.ToString())
-                                     / double.Parse(e.AddedItems[0].ToString()) < 0.25 ? "Отношение меньшего диаметра стержня к большему должно быть не менее 0.25" : string.Empty;
+                                     / double.Parse(e.AddedItems[0].ToString()) < 0.25
+                                     ? ModPlusAPI.Language.GetItem(LangItem, "h44")
+                                     : string.Empty;
                 }
                 else
                 {
                     TbMessage.Text = double.Parse(e.AddedItems[0].ToString())
-                                     / double.Parse(CbFirstTransverse.SelectedItem.ToString()) < 0.25 ? "Отношение меньшего диаметра стержня к большему должно быть не менее 0.25" : string.Empty;
+                                     / double.Parse(CbFirstTransverse.SelectedItem.ToString()) < 0.25
+                                     ? ModPlusAPI.Language.GetItem(LangItem, "h44")
+                                     : string.Empty;
                 }
             }
             // Максимальная длина рулона
@@ -351,12 +354,16 @@ namespace mpMeshes
                     double.Parse(CbFirstLongitudinal.SelectedItem.ToString()))
                 {
                     TbMessage.Text = (double.Parse(CbFirstLongitudinal.SelectedItem.ToString())
-                                           / double.Parse(e.AddedItems[0].ToString())) < 0.25 ? "Отношение меньшего диаметра стержня к большему должно быть не менее 0.25" : string.Empty;
+                                           / double.Parse(e.AddedItems[0].ToString())) < 0.25
+                                           ? ModPlusAPI.Language.GetItem(LangItem, "h44")
+                                           : string.Empty;
                 }
                 else
                 {
                     TbMessage.Text = (double.Parse(e.AddedItems[0].ToString())
-                                           / double.Parse(CbFirstLongitudinal.SelectedItem.ToString())) < 0.25 ? "Отношение меньшего диаметра стержня к большему должно быть не менее 0.25" : string.Empty;
+                                           / double.Parse(CbFirstLongitudinal.SelectedItem.ToString())) < 0.25
+                                           ? ModPlusAPI.Language.GetItem(LangItem, "h44")
+                                           : string.Empty;
                 }
             }
             // масса
@@ -441,14 +448,20 @@ namespace mpMeshes
             {
                 // Для типа 1 - кратно 25
                 case "1":
-                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep ? "Значение выпуска должно быть кратно 25" : string.Empty;
+                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep
+                        ? ModPlusAPI.Language.GetItem(LangItem, "h45")
+                        : string.Empty;
                     break;
                 // Для типа 2,3 - кратно 25
                 case "2":
-                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep ? "Значение выпуска должно быть кратно 25" : string.Empty;
+                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep
+                        ? ModPlusAPI.Language.GetItem(LangItem, "h45")
+                        : string.Empty;
                     break;
                 case "3":
-                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep ? "Значение выпуска должно быть кратно 25" : string.Empty;
+                    TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep
+                        ? ModPlusAPI.Language.GetItem(LangItem, "h45")
+                        : string.Empty;
                     break;
                 // Для 4,5 - от 30 до 200 кратно 5
                 case "4":
@@ -456,10 +469,10 @@ namespace mpMeshes
                     {
                         if (int.Parse(((TextBox)sender).Text) < 30 ||
                             int.Parse(((TextBox)sender).Text) > 200)
-                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 30 до 200 мм кратно 5 мм";
+                            TbMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h46");
                         else
                             if (Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 5)) > _ep)
-                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 30 до 200 мм кратно 5 мм";
+                            TbMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h46");
                         else TbMessage.Text = string.Empty;
                     }
                     else TbMessage.Text = string.Empty;
@@ -469,10 +482,10 @@ namespace mpMeshes
                     {
                         if (int.Parse(((TextBox)sender).Text) < 30 ||
                             int.Parse(((TextBox)sender).Text) > 200)
-                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 30 до 200 мм кратно 5 мм";
+                            TbMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h46");
                         else
                             if (Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 5)) > _ep)
-                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 30 до 200 мм кратно 5 мм";
+                            TbMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h46");
                         else TbMessage.Text = string.Empty;
                     }
                     else TbMessage.Text = string.Empty;
@@ -504,12 +517,12 @@ namespace mpMeshes
                 // Для типа 2,3 - кратно 25
                 case "2":
                     TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep
-                        ? "Значение выпуска должно быть кратно 25"
+                        ? ModPlusAPI.Language.GetItem(LangItem, "h45")
                         : string.Empty;
                     break;
                 case "3":
                     TbMessage.Text = Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep
-                        ? "Значение выпуска должно быть кратно 25"
+                        ? ModPlusAPI.Language.GetItem(LangItem, "h45")
                         : string.Empty;
                     break;
                 // Для 4,5 - от 15, 20, 30, а также от 25 до 100 кратно 100
@@ -520,10 +533,10 @@ namespace mpMeshes
                     {
                         if (int.Parse(((TextBox)sender).Text) < 25 ||
                             int.Parse(((TextBox)sender).Text) > 100)
-                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 15,20 и 30 мм, а также от 25 до 100 мм кратно 25 мм";
+                            TbMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h47");
                         else
                             if (Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep)
-                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 15,20 и 30 мм, а также от 25 до 100 мм кратно 25 мм";
+                            TbMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h47");
                         else TbMessage.Text = string.Empty;
                     }
                     else TbMessage.Text = string.Empty;
@@ -535,10 +548,10 @@ namespace mpMeshes
                     {
                         if (int.Parse(((TextBox)sender).Text) < 25 ||
                             int.Parse(((TextBox)sender).Text) > 100)
-                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 15,20 и 30 мм, а также от 25 до 100 мм кратно 25 мм";
+                            TbMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h47");
                         else
                             if (Math.Abs(Math.IEEERemainder(int.Parse(((TextBox)sender).Text), 25)) > _ep)
-                            TbMessage.Text = "Значение выпуска должно быть равным 25 мм. Допускается принимать от 15,20 и 30 мм, а также от 25 до 100 мм кратно 25 мм";
+                            TbMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h47");
                         else TbMessage.Text = string.Empty;
                     }
                     else TbMessage.Text = string.Empty;
@@ -690,7 +703,7 @@ namespace mpMeshes
                     )
                 {
                     TbFirstOutputOneMessage.Visibility = Visibility.Visible;
-                    TbFirstOutputOneMessage.Text = "Доборный шаг продольных стержней в тяжелых сетках не допускается!";
+                    TbFirstOutputOneMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h48");
                 }
                 else if (CbFirstMeshType.SelectedItem.ToString().Equals("4") ||
                     CbFirstMeshType.SelectedItem.ToString().Equals("5"))
@@ -703,14 +716,14 @@ namespace mpMeshes
                     if (addstep < 50 || addstep > step)
                     {
                         TbFirstOutputOneMessage.Visibility = Visibility.Visible;
-                        TbFirstOutputOneMessage.Text = "Доборный шаг продольных стержней в легких сетках должен быть от 50 мм до размера основного шага ("
-                            + step + ") кратно 10 мм";
+                        TbFirstOutputOneMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h49") + " ("
+                            + step + ") " + ModPlusAPI.Language.GetItem(LangItem, "h50");
                     }
                     else if (Math.Abs(Math.IEEERemainder(addstep, 10)) > _ep)
                     {
                         TbFirstOutputOneMessage.Visibility = Visibility.Visible;
-                        TbFirstOutputOneMessage.Text = "Доборный шаг продольных стержней в легких сетках должен быть от 50 мм до размера основного шага ("
-                            + step + ") кратно 10 мм";
+                        TbFirstOutputOneMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h49") + " ("
+                            + step + ") " + ModPlusAPI.Language.GetItem(LangItem, "h50");
                     }
                     else
                     {
@@ -748,7 +761,7 @@ namespace mpMeshes
                         Math.Abs(addstep - 300.0) > _ep)
                     {
                         TbFirstOutputTwoMessage.Visibility = Visibility.Visible;
-                        TbFirstOutputTwoMessage.Text = "Доборный шаг поперечных стержней в тяжелых сетках типа 1 должен быть 100, 200 или 300 мм!";
+                        TbFirstOutputTwoMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h51");
                     }
                     else
                     {
@@ -760,7 +773,7 @@ namespace mpMeshes
                     CbFirstMeshType.SelectedItem.ToString().Equals("3"))
                 {
                     TbFirstOutputTwoMessage.Visibility = Visibility.Visible;
-                    TbFirstOutputTwoMessage.Text = "Доборный шаг поперечных стержней в тяжелых сетках типа 2,3 не допускается!";
+                    TbFirstOutputTwoMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h52");
                 }
                 else if (CbFirstMeshType.SelectedItem.ToString().Equals("4") ||
                     CbFirstMeshType.SelectedItem.ToString().Equals("5"))
@@ -771,12 +784,12 @@ namespace mpMeshes
                     if (addstep < 50 || addstep > 250)
                     {
                         TbFirstOutputTwoMessage.Visibility = Visibility.Visible;
-                        TbFirstOutputTwoMessage.Text = "Доборный шаг поперечных стержней в легких сетках должен быть от 50 до 250 мм кратно 10 мм!";
+                        TbFirstOutputTwoMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h53");
                     }
                     else if (Math.Abs(Math.IEEERemainder(addstep, 10)) > _ep)
                     {
                         TbFirstOutputTwoMessage.Visibility = Visibility.Visible;
-                        TbFirstOutputTwoMessage.Text = "Доборный шаг поперечных стержней в легких сетках должен быть от 50 до 250 мм кратно 10 мм!";
+                        TbFirstOutputTwoMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h53");
                     }
                     else
                     {
@@ -879,7 +892,7 @@ namespace mpMeshes
                 string.IsNullOrEmpty(TbFirstMeshWidth.Text)
             )
             {
-                if (!ModPlusAPI.Windows.MessageBox.ShowYesNo("Не все данные введены верно! Продолжить?",
+                if (!ModPlusAPI.Windows.MessageBox.ShowYesNo(ModPlusAPI.Language.GetItem(LangItem, "h54"),
                     MessageBoxIcon.Question))
                     return;
             }
@@ -895,7 +908,7 @@ namespace mpMeshes
                         "\\A1;" + TbxC.Text + "{\\H1x; \\H0.9x;\\S" + TbFirstd.Text + TbFirstdClass.Text + TbFirstdStep.Text + TbFirstdAddStep.Text +
                         "/" + TbFirstdOne.Text + TbFirstdOneClass.Text + TbFirstdOneStep.Text + TbFirstdOneAddStep.Text + ";\\H1x; }" + TbFirstb.Text + TbFirstl.Text,
                         TbFirstMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
-                        "",""));
+                        "", ""));
                 }
                 else
                 {
@@ -910,7 +923,7 @@ namespace mpMeshes
                         ";\\H1x; }" + TbFirstb.Text + TbFirstl.Text + " {\\H0.9x;\\S" +
                         TbFirstaOne.Text + TbFirstaTwo.Text + "/" + TbFirsta.Text + ";}",
                         TbFirstMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
-                        "",""));
+                        "", ""));
                 }
             }
             catch (Exception exception)
@@ -1007,8 +1020,8 @@ namespace mpMeshes
         private void SecondFill()
         {
             // Тип сетки по точности
-            CbSecondMeshType.Items.Add("Нормальной точности");
-            CbSecondMeshType.Items.Add("Повышенной точности");
+            CbSecondMeshType.Items.Add(ModPlusAPI.Language.GetItem(LangItem, "h55"));
+            CbSecondMeshType.Items.Add(ModPlusAPI.Language.GetItem(LangItem, "h56"));
             CbSecondMeshType.SelectedIndex = 0;
             // Основной шаг сетки
             CbSecondMainStep.Items.Add("100");
@@ -1019,7 +1032,7 @@ namespace mpMeshes
         // Выбор типа сетки по точности размеров
         private void CbSecondMeshType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TbSecondType.Text = e.AddedItems[0].Equals("Нормальной точности") ? "5BpI" : "5ПBpI";
+            TbSecondType.Text = e.AddedItems[0].Equals(ModPlusAPI.Language.GetItem(LangItem, "h55")) ? "5BpI" : "5ПBpI";
         }
         // Выбор основного шага сетки
         private void CbSecondMainStep_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1073,7 +1086,7 @@ namespace mpMeshes
                 string.IsNullOrEmpty(TbSecondMassa.Text)
             )
             {
-                if (!ModPlusAPI.Windows.MessageBox.ShowYesNo("Не все данные введены верно! Продолжить?",
+                if (!ModPlusAPI.Windows.MessageBox.ShowYesNo(ModPlusAPI.Language.GetItem(LangItem, "h54"),
                     MessageBoxIcon.Question))
                     return;
             }
@@ -1088,7 +1101,7 @@ namespace mpMeshes
                     "/" + TbSecondSOne.Text +
                     ";\\H1x; }" + "2350  L=" + TbSecondMeshLength.Text,
                     TbSecondMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
-                    "",""));
+                    "", ""));
             }
             catch (Exception exception)
             {
@@ -1123,10 +1136,10 @@ namespace mpMeshes
                     var twoOutputs = double.Parse(TbSecondLongitudinalOutput.Text) * 2;
                     var step = double.Parse(CbSecondMainStep.SelectedItem.ToString());
                     var ieeereminder = Math.IEEERemainder(length - twoOutputs, step);
-                    TbMessage.Text = Math.Abs(ieeereminder) > _ep ? "Неверное значение длины сетки!" : string.Empty;
+                    TbMessage.Text = Math.Abs(ieeereminder) > _ep ? ModPlusAPI.Language.GetItem(LangItem, "h57") : string.Empty;
                 }
                 else
-                    TbMessage.Text = "Неверное значение длины сетки!";
+                    TbMessage.Text = ModPlusAPI.Language.GetItem(LangItem, "h57");
                 TbSecondMeshLengthResult.Text = TbSecondMeshLength.Text;
                 Massa();
             }
@@ -1189,8 +1202,8 @@ namespace mpMeshes
         private void ThirdFill()
         {
             FillComboBoxWithStringList(CbThirdMeshType, new List<string> {
-                "в одном направлении",
-                "в двух направлениях"
+                ModPlusAPI.Language.GetItem(LangItem, "h58"),
+                ModPlusAPI.Language.GetItem(LangItem, "h59")
             });
         }
         // Выбор типа сетки
@@ -1271,7 +1284,7 @@ namespace mpMeshes
                     "/" + TbThirdTransDiam.Text +
                     ";\\H1x; }" + TbThirdLength.Text + "x" + TbThirdWidth.Text,
                     TbThirdMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
-                    "",""));
+                    "", ""));
             }
             catch (Exception exception)
             {
@@ -1534,8 +1547,9 @@ namespace mpMeshes
     }
     public class MpMeshesHelpFunc
     {
-        // Вспомогательные и рабочие функции
+        private const string LangItem = "mpMeshes";
 
+        // Вспомогательные и рабочие функции
         /// <summary>
         /// Заполнение окна вывода сообщений
         /// </summary>
@@ -1546,10 +1560,10 @@ namespace mpMeshes
             var messages = new List<string>
             {
                 string.Empty,
-                "Ширина сетки должна быть не меньше " + str + " мм",
-                "Ширина сетки должна быть не больше " + str + " мм",
-                "Длина сетки должна быть не меньше " + str + " мм",
-                "Длина сетки должна быть не больше " + str + " мм"
+                Language.GetItem(LangItem, "h60") + " " + str + " " + Language.GetItem(LangItem, "mm"),
+                Language.GetItem(LangItem, "h61") + " " + str + " " + Language.GetItem(LangItem, "mm"),
+                Language.GetItem(LangItem, "h62") + " " + str + " " + Language.GetItem(LangItem, "mm"),
+                Language.GetItem(LangItem, "h63") + " " + str + " " + Language.GetItem(LangItem, "mm")
             };
             return messages[number];
         }
