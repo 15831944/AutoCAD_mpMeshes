@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mpMeshes_2010", "mpMeshes_2010\mpMeshes_2010.csproj", "{5EA74BFF-6238-41E6-971D-03A54E45C78C}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mpMeshes_2017", "mpMeshes_2017\mpMeshes_2017.csproj", "{259A1F05-FD5A-41DA-8C3A-E5F05A48D4C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mpMeshes_2018", "mpMeshes_2018\mpMeshes_2018.csproj", "{9F97BB28-66E1-4320-A95D-911925D933FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mpMeshes_2019", "mpMeshes_2019\mpMeshes_2019.csproj", "{61645D23-6735-4C9F-AE61-C1F95CEADAFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,8 +65,15 @@ Global
 		{9F97BB28-66E1-4320-A95D-911925D933FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F97BB28-66E1-4320-A95D-911925D933FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F97BB28-66E1-4320-A95D-911925D933FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61645D23-6735-4C9F-AE61-C1F95CEADAFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61645D23-6735-4C9F-AE61-C1F95CEADAFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61645D23-6735-4C9F-AE61-C1F95CEADAFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61645D23-6735-4C9F-AE61-C1F95CEADAFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A4AAD197-718B-4F1C-9BBA-B4433544320B}
 	EndGlobalSection
 EndGlobal
