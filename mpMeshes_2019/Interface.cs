@@ -26,9 +26,4 @@ namespace mpMeshes
         public List<string> SubHelpImages => new List<string>();
         public List<string> SubClassNames => new List<string>();
     }
-
-    public static class VersionData
-    {
-        public static string FuncVersion = "2019";
-    }
 }

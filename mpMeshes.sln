@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mpMeshes_2010", "mpMeshes_2010\mpMeshes_2010.csproj", "{5EA74BFF-6238-41E6-971D-03A54E45C78C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mpMeshes_2011", "mpMeshes_2011\mpMeshes_2011.csproj", "{8AC115DA-9AF7-4F0B-A43D-5410AB437B57}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mpMeshes_2012", "mpMeshes_2012\mpMeshes_2012.csproj", "{70FAC11D-A75D-4BEE-A3A8-FFA747D55746}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mpMeshes_2013", "mpMeshes_2013\mpMeshes_2013.csproj", "{28E153AE-08F6-4549-BDA8-B0A1B3A13405}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mpMeshes_2014", "mpMeshes_2014\mpMeshes_2014.csproj", "{DCBB08E6-BB6C-4153-9702-252EE8581CCD}"
@@ -29,18 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5EA74BFF-6238-41E6-971D-03A54E45C78C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5EA74BFF-6238-41E6-971D-03A54E45C78C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5EA74BFF-6238-41E6-971D-03A54E45C78C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5EA74BFF-6238-41E6-971D-03A54E45C78C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AC115DA-9AF7-4F0B-A43D-5410AB437B57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AC115DA-9AF7-4F0B-A43D-5410AB437B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AC115DA-9AF7-4F0B-A43D-5410AB437B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AC115DA-9AF7-4F0B-A43D-5410AB437B57}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70FAC11D-A75D-4BEE-A3A8-FFA747D55746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70FAC11D-A75D-4BEE-A3A8-FFA747D55746}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70FAC11D-A75D-4BEE-A3A8-FFA747D55746}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70FAC11D-A75D-4BEE-A3A8-FFA747D55746}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28E153AE-08F6-4549-BDA8-B0A1B3A13405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28E153AE-08F6-4549-BDA8-B0A1B3A13405}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28E153AE-08F6-4549-BDA8-B0A1B3A13405}.Release|Any CPU.ActiveCfg = Release|Any CPU

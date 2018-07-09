@@ -1,8 +1,4 @@
-﻿#if ac2010
-using AcApp = Autodesk.AutoCAD.ApplicationServices.Application;
-#elif ac2013
-using AcApp = Autodesk.AutoCAD.ApplicationServices.Core.Application;
-#endif
+﻿using AcApp = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,9 +12,7 @@ using Autodesk.AutoCAD.Runtime;
 using ModPlus.Helpers;
 using ModPlusAPI;
 using ModPlusAPI.Windows;
-using ModPlusAPI.Windows.Helpers;
 using Exception = System.Exception;
-using Variables = ModPlusAPI.Variables;
 
 namespace mpMeshes
 {
@@ -86,6 +80,79 @@ namespace mpMeshes
         {
             DragMove();
         }
+
+        private void MpMeshes_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                const UserConfigFile.ConfigFileZone zone = UserConfigFile.ConfigFileZone.Settings;
+                const string f = "mpMeshes";
+                // first
+                CbFirstMeshType.SelectedIndex = int.TryParse(UserConfigFile.GetValue(zone, f, nameof(CbFirstMeshType)), out var i) ? i : 0;
+                TbFirstMeshWidth.Text = UserConfigFile.GetValue(zone, f, nameof(TbFirstMeshWidth));
+                TbFirstMeshLength.Text = UserConfigFile.GetValue(zone, f, nameof(TbFirstMeshLength));
+                CbFirstLongitudinal.SelectedItem = UserConfigFile.GetValue(zone, f, nameof(CbFirstLongitudinal));
+                CbFirstLongitudinalClass.SelectedItem = UserConfigFile.GetValue(zone, f, nameof(CbFirstLongitudinalClass));
+                CbFirstTransverse.SelectedItem = UserConfigFile.GetValue(zone, f, nameof(CbFirstTransverse));
+                CbFirstTransverseCalss.SelectedItem = UserConfigFile.GetValue(zone, f, nameof(CbFirstTransverseCalss));
+                CbFirstLongitudinalStep.SelectedItem = UserConfigFile.GetValue(zone, f, nameof(CbFirstLongitudinalStep));
+                CbFirstTransverseStep.SelectedItem = UserConfigFile.GetValue(zone, f, nameof(CbFirstTransverseStep));
+                slider1.Value = double.TryParse(UserConfigFile.GetValue(zone, f, nameof(slider1)), out var d) ? d : 3.0;
+                // second
+                CbSecondMeshType.SelectedIndex = int.TryParse(UserConfigFile.GetValue(zone, f, nameof(CbSecondMeshType)), out i) ? i : 0;
+                TbSecondMeshLength.Text = UserConfigFile.GetValue(zone, f, nameof(TbSecondMeshLength));
+                CbSecondMainStep.SelectedItem = UserConfigFile.GetValue(zone, f, nameof(CbSecondMainStep));
+                slider2.Value = double.TryParse(UserConfigFile.GetValue(zone, f, nameof(slider2)), out d) ? d : 3.0;
+                // third
+                CbThirdMeshType.SelectedIndex = int.TryParse(UserConfigFile.GetValue(zone, f, nameof(CbThirdMeshType)), out i) ? i : 0;
+                CbThirdMeshLength.SelectedIndex = int.TryParse(UserConfigFile.GetValue(zone, f, nameof(CbThirdMeshLength)), out i) ? i : 0;
+                CbThirdMeshWidth.SelectedIndex = int.TryParse(UserConfigFile.GetValue(zone, f, nameof(CbThirdMeshWidth)), out i) ? i : 0;
+                CbThirdDiamsRatio.SelectedIndex = int.TryParse(UserConfigFile.GetValue(zone, f, nameof(CbThirdDiamsRatio)), out i) ? i : 0;
+                slider3.Value = double.TryParse(UserConfigFile.GetValue(zone, f, nameof(slider3)), out d) ? d : 3.0;
+            }
+            catch (Exception exception)
+            {
+                ExceptionBox.Show(exception);
+            }
+        }
+
+        private void MpMeshes_OnClosed(object sender, EventArgs e)
+        {
+            try
+            {
+                const UserConfigFile.ConfigFileZone zone = UserConfigFile.ConfigFileZone.Settings;
+                const string f = "mpMeshes";
+                // first
+                UserConfigFile.SetValue(zone, f, nameof(CbFirstMeshType), CbFirstMeshType.SelectedIndex.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(TbFirstMeshWidth), TbFirstMeshWidth.Text, false);
+                UserConfigFile.SetValue(zone, f, nameof(TbFirstMeshLength), TbFirstMeshLength.Text, false);
+                UserConfigFile.SetValue(zone, f, nameof(CbFirstLongitudinal), CbFirstLongitudinal.SelectedItem.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(CbFirstLongitudinalClass), CbFirstLongitudinalClass.SelectedItem.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(CbFirstTransverse), CbFirstTransverse.SelectedItem.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(CbFirstTransverseCalss), CbFirstTransverseCalss.SelectedItem.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(CbFirstLongitudinalStep), CbFirstLongitudinalStep.SelectedItem.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(CbFirstTransverseStep), CbFirstTransverseStep.SelectedItem.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(slider1), slider1.Value.ToString(CultureInfo.InvariantCulture), false);
+                // second
+                UserConfigFile.SetValue(zone, f, nameof(CbSecondMeshType), CbSecondMeshType.SelectedIndex.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(TbSecondMeshLength), TbSecondMeshLength.Text, false);
+                UserConfigFile.SetValue(zone, f, nameof(CbSecondMainStep), CbSecondMainStep.SelectedItem.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(slider2), slider2.Value.ToString(CultureInfo.InvariantCulture), false);
+                // third
+                UserConfigFile.SetValue(zone, f, nameof(CbThirdMeshType), CbThirdMeshType.SelectedIndex.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(CbThirdMeshLength), CbThirdMeshLength.SelectedIndex.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(CbThirdMeshWidth), CbThirdMeshWidth.SelectedIndex.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(CbThirdDiamsRatio), CbThirdDiamsRatio.SelectedIndex.ToString(), false);
+                UserConfigFile.SetValue(zone, f, nameof(slider3), slider3.Value.ToString(CultureInfo.InvariantCulture), false);
+                // save
+                UserConfigFile.SaveConfigFile();
+            }
+            catch (Exception exception)
+            {
+                ExceptionBox.Show(exception);
+            }
+        }
+
         #endregion
         #region First
         readonly MpMeshesHelpFunc _helpFunc = new MpMeshesHelpFunc();
@@ -295,13 +362,18 @@ namespace mpMeshes
                 e.AddedItems[0].ToString().Equals("5"))
             {
                 ChFirstRoll.Visibility = Visibility.Visible;
-                FillComboBoxWithStringList(CbFirstLongitudinalClass, new List<string> { "B-I", "Bp-I", "B-II", "Bp-II" });
+                FillComboBoxWithStringList(CbFirstLongitudinalClass, new List<string> { "B500C", "Bp-I" });
             }
             else
             {
                 ChFirstRoll.IsChecked = false;
                 ChFirstRoll.Visibility = Visibility.Collapsed;
-                FillComboBoxWithStringList(CbFirstLongitudinalClass, new List<string> { "A-I", "A-II", "A-III", "A-IV", "A-V", "A-VI" });
+                if (CbFirstMeshType.SelectedItem.ToString() == "1" ||
+                   CbFirstMeshType.SelectedItem.ToString() == "2" ||
+                   CbFirstMeshType.SelectedItem.ToString() == "3")
+                    FillComboBoxWithStringList(CbFirstLongitudinalClass, new List<string> { "A400", "A500C", "A600C" });
+                else
+                    FillComboBoxWithStringList(CbFirstLongitudinalClass, new List<string> { "A240", "A400", "A500C", "B500C" });
             }
             // Отношение меньшего диаметра к большему
             if (CbFirstTransverse.Items.Count > 0)
@@ -344,9 +416,18 @@ namespace mpMeshes
             if (e.AddedItems[0].ToString().Equals("3") ||
                 e.AddedItems[0].ToString().Equals("4") ||
                 e.AddedItems[0].ToString().Equals("5"))
-                FillComboBoxWithStringList(CbFirstTransverseCalss, new List<string> { "B-I", "Bp-I", "B-II", "Bp-II" });
+            {
+                FillComboBoxWithStringList(CbFirstTransverseCalss, new List<string> { "Bp-I", "B500C" });
+            }
             else
-                FillComboBoxWithStringList(CbFirstTransverseCalss, new List<string> { "A-I", "A-II", "A-III", "A-IV", "A-V", "A-VI" });
+            {
+                if (CbFirstMeshType.SelectedItem.ToString() == "1" ||
+                    CbFirstMeshType.SelectedItem.ToString() == "2" ||
+                    CbFirstMeshType.SelectedItem.ToString() == "3")
+                    FillComboBoxWithStringList(CbFirstTransverseCalss, new List<string> { "A400", "A500C", "B500C", "A600C" });
+                else
+                    FillComboBoxWithStringList(CbFirstTransverseCalss, new List<string> { "B500C", "B-I" });
+            }
             // Отношение меньшего диаметра к большему
             if (CbFirstLongitudinal.Items.Count > 0)
             {
@@ -904,17 +985,17 @@ namespace mpMeshes
                 {
                     InsertToAutoCad.AddSpecificationItemToTableRow(new InsertToAutoCad.SpecificationItemForTable(
                         "",
-                        "ГОСТ 23279-85",
+                        "ГОСТ 23279-2012",
                         "\\A1;" + TbxC.Text + "{\\H1x; \\H0.9x;\\S" + TbFirstd.Text + TbFirstdClass.Text + TbFirstdStep.Text + TbFirstdAddStep.Text +
                         "/" + TbFirstdOne.Text + TbFirstdOneClass.Text + TbFirstdOneStep.Text + TbFirstdOneAddStep.Text + ";\\H1x; }" + TbFirstb.Text + TbFirstl.Text,
-                        TbFirstMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
+                        TbFirstMassa.Text.Replace(',', '.').Replace('.', char.Parse(ModPlusAPI.Variables.Separator)),
                         "", ""));
                 }
                 else
                 {
                     InsertToAutoCad.AddSpecificationItemToTableRow(new InsertToAutoCad.SpecificationItemForTable(
                         "",
-                        "ГОСТ 23279-85",
+                        "ГОСТ 23279-2012",
                         "\\A1;" + TbxC.Text +
                         "{\\H1x; \\H0.9x;\\S" + TbFirstd.Text + TbFirstdClass.Text + TbFirstdStep.Text +
                         TbFirstdAddStep.Text +
@@ -922,7 +1003,7 @@ namespace mpMeshes
                         TbFirstdOneAddStep.Text +
                         ";\\H1x; }" + TbFirstb.Text + TbFirstl.Text + " {\\H0.9x;\\S" +
                         TbFirstaOne.Text + TbFirstaTwo.Text + "/" + TbFirsta.Text + ";}",
-                        TbFirstMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
+                        TbFirstMassa.Text.Replace(',', '.').Replace('.', char.Parse(ModPlusAPI.Variables.Separator)),
                         "", ""));
                 }
             }
@@ -980,7 +1061,7 @@ namespace mpMeshes
                         Source =
                             new BitmapImage(
                                 new Uri(
-                                    @"pack://application:,,,/mpMeshes_" + VersionData.FuncVersion +
+                                    @"pack://application:,,,/mpMeshes_" + new Interface().AvailProductExternalVersion +
                                     ";component/Resources/" + imagename + ".png", UriKind.Absolute))
                     }
                 };
@@ -1015,6 +1096,7 @@ namespace mpMeshes
                 source.SelectedIndex = 0;
         }
         #endregion
+
         #region Second
         // Первоначальное заполнение значений
         private void SecondFill()
@@ -1100,7 +1182,7 @@ namespace mpMeshes
                     "{\\H1x; \\H0.9x;\\S" + TbSecondS.Text +
                     "/" + TbSecondSOne.Text +
                     ";\\H1x; }" + "2350  L=" + TbSecondMeshLength.Text,
-                    TbSecondMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
+                    TbSecondMassa.Text.Replace(',', '.').Replace('.', char.Parse(ModPlusAPI.Variables.Separator)),
                     "", ""));
             }
             catch (Exception exception)
@@ -1172,7 +1254,7 @@ namespace mpMeshes
                         Source =
                             new BitmapImage(
                                 new Uri(
-                                    @"pack://application:,,,/mpMeshes_" + VersionData.FuncVersion +
+                                    @"pack://application:,,,/mpMeshes_" + new Interface().AvailProductExternalVersion +
                                     ";component/Resources/" + imagename + ".png", UriKind.Absolute))
                     }
                 };
@@ -1184,6 +1266,7 @@ namespace mpMeshes
             }
         }
         #endregion
+
         #region Third
         // Список диаметров арматуры
         private readonly List<string> _thirdArmature = new List<string> { "6", "8", "10", "12", "14", "16", "18", "20", "22", "25", "28", "32" };
@@ -1283,7 +1366,7 @@ namespace mpMeshes
                     "{\\H1x; \\H0.9x;\\S" + TbThirdLongDiam.Text +
                     "/" + TbThirdTransDiam.Text +
                     ";\\H1x; }" + TbThirdLength.Text + "x" + TbThirdWidth.Text,
-                    TbThirdMassa.Text.Replace(',', '.').Replace('.', char.Parse(Variables.Separator)),
+                    TbThirdMassa.Text.Replace(',', '.').Replace('.', char.Parse(ModPlusAPI.Variables.Separator)),
                     "", ""));
             }
             catch (Exception exception)
@@ -1530,7 +1613,7 @@ namespace mpMeshes
                         Source =
                             new BitmapImage(
                                 new Uri(
-                                    @"pack://application:,,,/mpMeshes_" + VersionData.FuncVersion +
+                                    @"pack://application:,,,/mpMeshes_" + new Interface().AvailProductExternalVersion +
                                     ";component/Resources/" + imagename + ".png", UriKind.Absolute))
                     }
                 };
@@ -1542,8 +1625,6 @@ namespace mpMeshes
             }
         }
         #endregion
-
-
     }
     public class MpMeshesHelpFunc
     {
