@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\ModPlus\Functions\mpMeshes\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\ModPlus\Functions\AutoCAD\mpMeshes\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\ModPlus\Functions\mpMeshes\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\ModPlus\Functions\AutoCAD\mpMeshes\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -42,12 +42,12 @@
       <HintPath>C:\_Acad dlls\2015\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="MahApps.Metro">
-      <HintPath>..\..\..\..\..\..\..\ModPlus\Extensions\MahApps.Metro.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="ModPlusAPI">
       <HintPath>..\..\..\..\..\..\..\ModPlus\Extensions\ModPlusAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ModPlusStyle">
+      <HintPath>..\..\..\..\..\..\..\ModPlus\Extensions\ModPlusStyle.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ModPlus_2015">
@@ -65,6 +65,9 @@
     <Compile Include="..\mpMeshes_2013\MpMeshes.xaml.cs">
       <Link>MpMeshes.xaml.cs</Link>
       <DependentUpon>MpMeshes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\mpMeshes_2013\Properties\AssemblyInfoCommon.cs">
+      <Link>Properties\AssemblyInfoCommon.cs</Link>
     </Compile>
     <Compile Include="..\mpMeshes_2013\ShowImageWindow.xaml.cs">
       <Link>ShowImageWindow.xaml.cs</Link>

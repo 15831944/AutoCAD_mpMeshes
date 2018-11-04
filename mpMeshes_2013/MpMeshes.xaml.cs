@@ -27,7 +27,7 @@ namespace mpMeshes
             InitializeComponent();
             Title = ModPlusAPI.Language.GetItem(LangItem, "h1");
             //
-            LabelName.Content = ModPlusAPI.Language.GetItem(LangItem, "h35");
+            LabelName.Text = ModPlusAPI.Language.GetItem(LangItem, "h35");
             // Заполняем значения первой вкладки
             FillFirstTab();
             // second
@@ -38,17 +38,17 @@ namespace mpMeshes
         #region MainWindow
         private void TabItem_GotFocus(object sender, RoutedEventArgs e)
         {
-            LabelName.Content = ModPlusAPI.Language.GetItem(LangItem, "h35");
+            LabelName.Text = ModPlusAPI.Language.GetItem(LangItem, "h35");
         }
 
         private void TabItem_GotFocus_1(object sender, RoutedEventArgs e)
         {
-            LabelName.Content = ModPlusAPI.Language.GetItem(LangItem, "h36");
+            LabelName.Text = ModPlusAPI.Language.GetItem(LangItem, "h36");
         }
 
         private void TabItem_GotFocus_2(object sender, RoutedEventArgs e)
         {
-            LabelName.Content = ModPlusAPI.Language.GetItem(LangItem, "h37");
+            LabelName.Text = ModPlusAPI.Language.GetItem(LangItem, "h37");
         }
 
         private void Window_MouseLeave(object sender, MouseEventArgs e)
@@ -76,11 +76,7 @@ namespace mpMeshes
                 e.Handled = true;
             }
         }
-        private void MpMeshes_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            DragMove();
-        }
-
+        
         private void MpMeshes_OnLoaded(object sender, RoutedEventArgs e)
         {
             try

@@ -1,23 +1,20 @@
-﻿<mpc:BaseMetroWindow x:Class="mpMeshes.MpMeshes"
+﻿<mps:ModPlusWindow x:Class="mpMeshes.MpMeshes"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       mc:Ignorable="d" 
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:mpc="clr-namespace:ModPlusAPI.Windows.Mpc;assembly=ModPlusAPI"
+                      xmlns:mps="https://modplus.org/winfx/xaml/controls"
                       SizeToContent="WidthAndHeight" 
                       MouseEnter="Window_MouseEnter" MouseLeave="Window_MouseLeave"
-                      MouseLeftButtonDown="MpMeshes_OnMouseLeftButtonDown"
                       ResizeMode="CanMinimize"
                      Loaded="MpMeshes_OnLoaded" Closed="MpMeshes_OnClosed">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- For IntelliSense -->
-                <ResourceDictionary Source="pack://application:,,,/ModPlusAPI;component/Windows/WinResources/Styles.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ModPlusStyle;component/Styles/Controls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <XmlDataProvider x:Key="Lang" Source="E:/ModPlus/Languages/en-US.xml" XPath="ModPlus/mpMeshes"></XmlDataProvider>
+            <XmlDataProvider x:Key="Lang" Source="E:/ModPlus/Languages/en-US.xml" XPath="ModPlus/mpMeshes" IsAsynchronous="False"></XmlDataProvider>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -29,10 +26,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Name="LabelName" Margin="2" Grid.Row="0"></Label>
-        <mah:MetroTabControl x:Name="MainTabControl" Grid.Row="1" mah:TabControlHelper.Underlined="TabItems">
-            <mah:MetroTabItem Header="{Binding Source={StaticResource Lang}, XPath=h2}" GotFocus="TabItem_GotFocus"
-                              mah:ControlsHelper.HeaderFontSize="20">
+        <TextBlock Name="LabelName" Grid.Row="0" Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
+        <TabControl x:Name="MainTabControl" Grid.Row="1" mps:TabControlAssist.Underlined="TabPanel">
+            <TabItem Header="{Binding Source={StaticResource Lang}, XPath=h2}" GotFocus="TabItem_GotFocus">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -40,75 +36,88 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="2">
-                        <StackPanel Orientation="Vertical" Margin="2" MinWidth="80">
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h3}"
-                                       HorizontalAlignment="Center"></Label>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h3}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"
+                                       HorizontalAlignment="Center"></TextBlock>
                             <ComboBox Name="CbFirstMeshType" HorizontalAlignment="Center" 
-                                      SelectionChanged="CbFirstMeshType_SelectionChanged" Width="60"></ComboBox>
-                            <TextBlock Width="120" HorizontalAlignment="Center" Name="MeshKind" VerticalAlignment="Center" Margin="2"></TextBlock>
+                                      SelectionChanged="CbFirstMeshType_SelectionChanged" Width="120"></ComboBox>
+                            <TextBlock Width="120" HorizontalAlignment="Center" Name="MeshKind"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                             <CheckBox Content="{Binding Source={StaticResource Lang}, XPath=h4}"
                                           IsChecked="False" Checked="ChFirstRoll_Checked" 
                                           HorizontalAlignment="Center" Name="ChFirstRoll"
                                           Unchecked="ChFirstRoll_Unchecked"></CheckBox>
                             <Button Name="BtFirstImage" Content="{Binding Source={StaticResource Lang}, XPath=h5}"
-                                        HorizontalAlignment="Center"
-                                        Margin="2" Click="BtFirstImage_Click" MinWidth="75"></Button>
+                                    Style="{DynamicResource ModPlusFlatButton}" Click="BtFirstImage_Click"></Button>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="2" MaxWidth="150">
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h6}"
-                                       HorizontalAlignment="Center"></Label>
-                            <TextBlock Name="FirstWidthLimit" HorizontalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                            <TextBox Name="TbFirstMeshWidth" PreviewKeyDown="TbNoSpace_PreviewKeyDown" MinWidth="50"
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h6}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"
+                                       HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Name="FirstWidthLimit" HorizontalAlignment="Center" TextWrapping="Wrap"
+                                       Width="100" Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
+                            <TextBox Name="TbFirstMeshWidth" PreviewKeyDown="TbNoSpace_PreviewKeyDown" Width="100"
                                      PreviewTextInput="TextBoxOnlyNumbers_PreviewTextInput" 
                                      HorizontalAlignment="Center" TextChanged="TbFirstMeshWidth_TextChanged"></TextBox>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="2" MaxWidth="150">
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h7}"
-                                       HorizontalAlignment="Center"></Label>
-                            <TextBlock Name="FirstLengthLimit" TextWrapping="Wrap" HorizontalAlignment="Center"></TextBlock>
-                            <TextBox Name="TbFirstMeshLength" PreviewKeyDown="TbNoSpace_PreviewKeyDown" MinWidth="50"
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h7}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"
+                                       HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Name="FirstLengthLimit" TextWrapping="Wrap" HorizontalAlignment="Center"
+                                       Width="100" Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
+                            <TextBox Name="TbFirstMeshLength" PreviewKeyDown="TbNoSpace_PreviewKeyDown" Width="100"
                                      PreviewTextInput="TextBoxOnlyNumbers_PreviewTextInput" 
                                      HorizontalAlignment="Center" TextChanged="TbFirstMeshLength_TextChanged"></TextBox>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="2">
-                            <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h8}"></Label>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h8}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                                <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h9}"></Label>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h9}"
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                                 <StackPanel Orientation="Horizontal">
                                     <ComboBox MinWidth="50" HorizontalAlignment="Stretch" Name="CbFirstLongitudinal"
                                               SelectionChanged="CbFirstLongitudinal_SelectionChanged"></ComboBox>
                                     <ComboBox MinWidth="60" HorizontalAlignment="Stretch" Name="CbFirstLongitudinalClass" VerticalAlignment="Center"
-                                              Margin="5,0,0,0" SelectionChanged="CbFirstLongitudinalClass_SelectionChanged"></ComboBox>
+                                              SelectionChanged="CbFirstLongitudinalClass_SelectionChanged"></ComboBox>
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                                <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h10}"></Label>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h10}"
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                                 <StackPanel Orientation="Horizontal">
                                     <ComboBox MinWidth="50" HorizontalAlignment="Center" Name="CbFirstTransverse"
                                               SelectionChanged="CbFirstTransverse_SelectionChanged"></ComboBox>
                                     <ComboBox MinWidth="60" HorizontalAlignment="Center" Name="CbFirstTransverseCalss" VerticalAlignment="Center"
-                                              Margin="5,0,0,0" SelectionChanged="CbFirstTransverseCalss_SelectionChanged"></ComboBox>
+                                              SelectionChanged="CbFirstTransverseCalss_SelectionChanged"></ComboBox>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="2">
-                            <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h11}"></Label>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h11}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                                <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h12}"></Label>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h12}"
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                                 <ComboBox Width="80" HorizontalAlignment="Center" Name="CbFirstLongitudinalStep" 
                                           SelectionChanged="CbFirstLongitudinalStep_SelectionChanged"></ComboBox>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                                <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h13}"></Label>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h13}"
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                                 <ComboBox Width="80" HorizontalAlignment="Center" Name="CbFirstTransverseStep" 
                                           SelectionChanged="CbFirstTransverseStep_SelectionChanged"></ComboBox>
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="2">
-                            <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h14}"></Label>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h14}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                                <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h15}"></Label>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h15}"
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                                 <Grid >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
@@ -127,7 +136,8 @@
                                 </Grid>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                                <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h16}"></Label>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h16}"
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                                 <TextBox MinWidth="40" HorizontalAlignment="Center" 
                                          Name="TbFirstTransverseOutput" 
                                          PreviewKeyDown="TbNoSpace_PreviewKeyDown"
@@ -136,8 +146,9 @@
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
-                    <Border Grid.Row="1" BorderBrush="{DynamicResource TextBoxBorderBrush}" BorderThickness="1">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="2">
+                    <Border Grid.Row="1" BorderBrush="{DynamicResource BoxesBorderBrush}" BorderThickness="1"
+                            Padding="5">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock Name="TbxC" VerticalAlignment="Center"></TextBlock>
                             <StackPanel Orientation="Vertical" Margin="5,0,5,0">
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -146,6 +157,9 @@
                                     <TextBlock Name="TbFirstdStep" VerticalAlignment="Center"></TextBlock>
                                     <TextBlock Name="TbFirstdAddStep" VerticalAlignment="Center"></TextBlock>
                                 </StackPanel>
+                                <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                              BorderBrush="{DynamicResource BlackBrush}" BorderThickness="0 1 0 0"
+                                              IsTabStop="False" IsHitTestVisible="False" IsManipulationEnabled="False"></GridSplitter>
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <TextBlock Name="TbFirstdOne" VerticalAlignment="Center"></TextBlock>
                                     <TextBlock Name="TbFirstdOneClass" VerticalAlignment="Center"></TextBlock>
@@ -183,20 +197,19 @@
                             </StackPanel>
                         </StackPanel>
                     </Border>
-                    <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center" Margin="2">
+                    <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center">
                         <TextBlock TextWrapping="Wrap" Name="TbFirstOutputOneMessage" Visibility="Collapsed"
+                                   Margin="{DynamicResource ModPlusDefaultMargin}" MaxWidth="670"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                         <TextBlock TextWrapping="Wrap" Name="TbFirstOutputTwoMessage" Visibility="Collapsed"
+                                   Margin="{DynamicResource ModPlusDefaultMargin}" MaxWidth="670"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                     </StackPanel>
                     <Button Grid.Row="3" Content="{Binding Source={StaticResource Lang}, XPath=insert}"
-                                Name="BtFirstAdd" MinWidth="75" Margin="2" HorizontalAlignment="Center"
-                                Click="BtFirstAdd_Click"></Button>
+                            Name="BtFirstAdd" Click="BtFirstAdd_Click"></Button>
                 </Grid>
-            </mah:MetroTabItem>
-            <mah:MetroTabItem Header="{Binding Source={StaticResource Lang}, XPath=h19}"
-                                       GotFocus="TabItem_GotFocus_1"
-                                       mah:ControlsHelper.HeaderFontSize="20">
+            </TabItem>
+            <TabItem Header="{Binding Source={StaticResource Lang}, XPath=h19}" GotFocus="TabItem_GotFocus_1">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -204,17 +217,18 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="2">
-                        <StackPanel Orientation="Vertical" Margin="2" MinWidth="80">
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h20}"
-                                       HorizontalAlignment="Center"></Label>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <StackPanel Orientation="Vertical" MinWidth="80">
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h20}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"
+                                       HorizontalAlignment="Center"></TextBlock>
                             <ComboBox Name="CbSecondMeshType" HorizontalAlignment="Center"
                                       SelectionChanged="CbSecondMeshType_SelectionChanged" Width="150"></ComboBox>
-                            <Button Name="BtSecondImage" Content="{Binding Source={StaticResource Lang}, XPath=h5}" Margin="2"
-                                    HorizontalAlignment="Center"
-                                    Click="BtSecondImage_Click" MinWidth="75"></Button>
+                            <Button Name="BtSecondImage" Content="{Binding Source={StaticResource Lang}, XPath=h5}"
+                                    Style="{DynamicResource ModPlusFlatButton}"
+                                    Click="BtSecondImage_Click"></Button>
                         </StackPanel>
-                        <Grid Margin="2" MinWidth="80">
+                        <Grid MinWidth="80">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
@@ -224,25 +238,28 @@
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h21}"
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h21}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"
                                        HorizontalAlignment="Center"
-                                       Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"></Label>
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h7}"
-                                       Grid.Column="0" Grid.Row="1"></Label>
+                                       Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"></TextBlock>
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h7}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"
+                                       Grid.Column="0" Grid.Row="1"></TextBlock>
                             <TextBox Grid.Column="1" Grid.Row="1"
-                                     Name="TbSecondMeshLength" Margin="2"
+                                     Name="TbSecondMeshLength"
                                      PreviewKeyDown="TbNoSpace_PreviewKeyDown"
                                      PreviewTextInput="TextBoxOnlyNumbers_PreviewTextInput"
                                      TextChanged="TbSecondMeshLength_TextChanged"></TextBox>
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h22}"
-                                       Grid.Column="0" Grid.Row="2"></Label>
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h22}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"
+                                       Grid.Column="0" Grid.Row="2"></TextBlock>
                             <ComboBox Name="CbSecondMainStep" HorizontalAlignment="Center" Width="60"
-                                          Grid.Column="1" Grid.Row="2" Margin="2"
-                                          SelectionChanged="CbSecondMainStep_SelectionChanged"></ComboBox>
+                                      Grid.Column="1" Grid.Row="2"
+                                      SelectionChanged="CbSecondMainStep_SelectionChanged"></ComboBox>
                         </Grid>
-                        <StackPanel Orientation="Vertical" Margin="2">
-                            <Label HorizontalAlignment="Center"
-                                       Content="{Binding Source={StaticResource Lang}, XPath=h14}"></Label>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock HorizontalAlignment="Center" Margin="{DynamicResource ModPlusDefaultMargin}"
+                                       Text="{Binding Source={StaticResource Lang}, XPath=h14}"></TextBlock>
                             <Grid VerticalAlignment="Center">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
@@ -252,32 +269,43 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Label Content="{Binding Source={StaticResource Lang}, XPath=h23}"
-                                           VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"></Label>
-                                <TextBlock Name="TbSecondLongitudinalOutput" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0"></TextBlock>
-                                <Label Content="{Binding Source={StaticResource Lang}, XPath=h16}"
-                                           VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"></Label>
-                                <TextBlock Name="TbSecondTransverseOutput" VerticalAlignment="Center" Text="25"
-                                           Grid.Column="1" Grid.Row="1"></TextBlock>
+                                <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h23}"
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"
+                                           Grid.Column="0" Grid.Row="0"></TextBlock>
+                                <TextBlock Name="TbSecondLongitudinalOutput" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0"
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
+                                <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h16}"
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"
+                                           Grid.Column="0" Grid.Row="1"></TextBlock>
+                                <TextBlock Name="TbSecondTransverseOutput" Margin="{DynamicResource ModPlusDefaultMargin}"
+                                           Text="25" Grid.Column="1" Grid.Row="1"></TextBlock>
                             </Grid>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="2" MinWidth="80">
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h24}" HorizontalAlignment="Center"></Label>
-                            <TextBlock Name="TbSecondTransverseSum" HorizontalAlignment="Center"></TextBlock>
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h25}"
-                                       HorizontalAlignment="Center"></Label>
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h26}"
-                                       HorizontalAlignment="Center"></Label>
-                            <TextBlock Name="TbSecondTransverseBreak" HorizontalAlignment="Center"></TextBlock>
+                        <StackPanel Orientation="Vertical" MinWidth="80">
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h24}" HorizontalAlignment="Center"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
+                            <TextBlock Name="TbSecondTransverseSum" HorizontalAlignment="Center"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h25}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"
+                                       HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h26}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"
+                                       HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Name="TbSecondTransverseBreak" HorizontalAlignment="Center"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                         </StackPanel>
                     </StackPanel>
-                    <Border Grid.Row="1" BorderBrush="{DynamicResource TextBoxBorderBrush}" BorderThickness="1">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="2">
+                    <Border Grid.Row="1" BorderBrush="{DynamicResource BoxesBorderBrush}" BorderThickness="1" Padding="5">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock Name="TbSecondType" VerticalAlignment="Center" Text="5BpI"></TextBlock>
                             <StackPanel Orientation="Vertical" Margin="5,0,5,0">
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <TextBlock Name="TbSecondS" VerticalAlignment="Center"></TextBlock>
                                 </StackPanel>
+                                <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                              BorderBrush="{DynamicResource BlackBrush}" BorderThickness="0 1 0 0"
+                                              IsTabStop="False" IsHitTestVisible="False" IsManipulationEnabled="False"></GridSplitter>
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <TextBlock Name="TbSecondSOne" VerticalAlignment="Center"></TextBlock>
                                 </StackPanel>
@@ -309,13 +337,10 @@
                         </StackPanel>
                     </Border>
                     <Button Grid.Row="2" Content="{Binding Source={StaticResource Lang}, XPath=insert}" 
-                                MinWidth="75" Margin="2" HorizontalAlignment="Center"
-                                Click="BtSecondAdd_Click" Name="BtSecondAdd"></Button>
+                            Click="BtSecondAdd_Click" Name="BtSecondAdd"></Button>
                 </Grid>
-            </mah:MetroTabItem>
-            <mah:MetroTabItem Header="{Binding Source={StaticResource Lang}, XPath=h28}"
-                                       GotFocus="TabItem_GotFocus_2"
-                                       mah:ControlsHelper.HeaderFontSize="20">
+            </TabItem>
+            <TabItem Header="{Binding Source={StaticResource Lang}, XPath=h28}" GotFocus="TabItem_GotFocus_2">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -323,35 +348,41 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="2">
-                        <StackPanel Orientation="Vertical" Margin="2" MinWidth="80">
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h29}"
-                                       HorizontalAlignment="Center"></Label>
-                            <ComboBox Name="CbThirdMeshType" HorizontalAlignment="Center" Margin="2"
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <StackPanel Orientation="Vertical" MinWidth="80">
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h29}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"
+                                       HorizontalAlignment="Center"></TextBlock>
+                            <ComboBox Name="CbThirdMeshType" HorizontalAlignment="Center"
                                       SelectionChanged="CbThirdMeshType_SelectionChanged" Width="160"></ComboBox>
-                            <Button Name="BtThirdImage" Content="{Binding Source={StaticResource Lang}, XPath=h5}" Margin="2"
-                                        HorizontalAlignment="Center"
-                                        Click="BtThirdImage_Click" MinWidth="75"></Button>
+                            <Button Name="BtThirdImage" Content="{Binding Source={StaticResource Lang}, XPath=h5}"
+                                    Style="{DynamicResource ModPlusFlatButton}"
+                                    Click="BtThirdImage_Click"></Button>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="2" MinWidth="80">
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h7}" HorizontalAlignment="Center"></Label>
-                            <ComboBox Name="CbThirdMeshLength" HorizontalAlignment="Center" Width="80" Height="23"
-                                          SelectionChanged="CbThirdMeshLength_SelectionChanged"></ComboBox>
-                            <Label Content="{Binding Source={StaticResource Lang}, XPath=h6}"
-                                       HorizontalAlignment="Center"></Label>
-                            <ComboBox Name="CbThirdMeshWidth" HorizontalAlignment="Center" Width="80" Height="23"
-                                          SelectionChanged="CbThirdMeshWidth_SelectionChanged"></ComboBox>
+                        <StackPanel Orientation="Vertical" MinWidth="80">
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h7}" HorizontalAlignment="Center"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
+                            <ComboBox Name="CbThirdMeshLength" HorizontalAlignment="Center" Width="80" 
+                                      SelectionChanged="CbThirdMeshLength_SelectionChanged"></ComboBox>
+                            <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h6}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"
+                                       HorizontalAlignment="Center"></TextBlock>
+                            <ComboBox Name="CbThirdMeshWidth" HorizontalAlignment="Center" Width="80"
+                                      SelectionChanged="CbThirdMeshWidth_SelectionChanged"></ComboBox>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="2">
-                            <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h30}"></Label>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h30}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h31}"></Label>
-                                <ComboBox MinWidth="65" HorizontalAlignment="Stretch" Name="CbThirdDiamsRatio" Height="23"
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h31}"
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
+                                <ComboBox MinWidth="65" HorizontalAlignment="Stretch" Name="CbThirdDiamsRatio"
                                           SelectionChanged="CbThirdDiamsRatio_SelectionChanged"></ComboBox>
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="2">
-                            <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h14}"></Label>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h14}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                             <Grid VerticalAlignment="Center">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
@@ -361,17 +392,20 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Label Content="{Binding Source={StaticResource Lang}, XPath=h23}" 
-                                       VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"></Label>
-                                <TextBlock Name="TbThirdLongitudinalOutput" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" ></TextBlock>
-                                <Label Content="{Binding Source={StaticResource Lang}, XPath=h32}" 
-                                           VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"></Label>
-                                <TextBlock Name="TbThirdTransverseOutput" VerticalAlignment="Center" Text="25"
-                                               Grid.Column="1" Grid.Row="1"></TextBlock>
+                                <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h23}" 
+                                        Grid.Column="0" Grid.Row="0"></TextBlock>
+                                <TextBlock Name="TbThirdLongitudinalOutput" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" 
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
+                                <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h32}" 
+                                           Margin="{DynamicResource ModPlusDefaultMargin}" Grid.Column="0" Grid.Row="1"></TextBlock>
+                                <TextBlock Name="TbThirdTransverseOutput" Text="25"
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"
+                                           Grid.Column="1" Grid.Row="1"></TextBlock>
                             </Grid>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="2">
-                            <Label HorizontalAlignment="Center" Content="{Binding Source={StaticResource Lang}, XPath=h11}"></Label>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock HorizontalAlignment="Center" Text="{Binding Source={StaticResource Lang}, XPath=h11}"
+                                       Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
                             <Grid VerticalAlignment="Center">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
@@ -381,30 +415,35 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Label Content="{Binding Source={StaticResource Lang}, XPath=h33}" 
-                                           VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"></Label>
-                                <TextBlock Name="TbThirdLongitudinalStep" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" ></TextBlock>
-                                <Label Content="{Binding Source={StaticResource Lang}, XPath=h34}"
-                                           VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"></Label>
-                                <TextBlock Name="TbThirdTransverseStep" VerticalAlignment="Center"
-                                               Grid.Column="1" Grid.Row="1"></TextBlock>
+                                <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h33}" 
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"
+                                           Grid.Column="0" Grid.Row="0"></TextBlock>
+                                <TextBlock Name="TbThirdLongitudinalStep" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" 
+                                           Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
+                                <TextBlock Text="{Binding Source={StaticResource Lang}, XPath=h34}"
+                                           Margin="{DynamicResource ModPlusDefaultMargin}" Grid.Column="0" Grid.Row="1"></TextBlock>
+                                <TextBlock Name="TbThirdTransverseStep"
+                                           Grid.Column="1" Grid.Row="1"></TextBlock>
                             </Grid>
                         </StackPanel>
                     </StackPanel>
-                    <Border Grid.Row="1" BorderBrush="{DynamicResource TextBoxBorderBrush}" BorderThickness="1">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="2">
+                    <Border Grid.Row="1" BorderBrush="{DynamicResource BoxesBorderBrush}" BorderThickness="1" Padding="5">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock Name="TbThirdType" VerticalAlignment="Center" Text=""></TextBlock>
                             <StackPanel Orientation="Vertical" Margin="5,0,5,0">
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <TextBlock Name="TbThirdLongDiam" VerticalAlignment="Center"></TextBlock>
                                 </StackPanel>
+                                <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                              BorderBrush="{DynamicResource BlackBrush}" BorderThickness="0 1 0 0"
+                                              IsTabStop="False" IsHitTestVisible="False" IsManipulationEnabled="False"></GridSplitter>
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <TextBlock Name="TbThirdTransDiam" VerticalAlignment="Center"></TextBlock>
                                 </StackPanel>
                             </StackPanel>
                             <TextBlock TextWrapping="NoWrap" Name="TbThirdLength"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                            <Label>x</Label>
+                            <TextBlock>x</TextBlock>
                             <TextBlock TextWrapping="NoWrap" Name="TbThirdWidth"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                             <StackPanel Margin="15,0,0,0" Orientation="Horizontal">
@@ -424,13 +463,13 @@
                             </StackPanel>
                         </StackPanel>
                     </Border>
-                    <Button Grid.Row="2" Content="{Binding Source={StaticResource Lang}, XPath=insert}" MinWidth="75" Margin="2"
+                    <Button Grid.Row="2" Content="{Binding Source={StaticResource Lang}, XPath=insert}"
                                 Name="BtThirdAdd" HorizontalAlignment="Center" Click="BtThirdAdd_Click"></Button>
                 </Grid>
-            </mah:MetroTabItem>
-        </mah:MetroTabControl>
-        <TextBlock Grid.Row="2" TextWrapping="Wrap" Name="TbMessage"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            </TabItem>
+        </TabControl>
+        <TextBlock Grid.Row="2" TextWrapping="Wrap" Name="TbMessage" MaxWidth="670"
+                   HorizontalAlignment="Center" Margin="{DynamicResource ModPlusDefaultMargin}"></TextBlock>
     </Grid>
-</mpc:BaseMetroWindow>
+</mps:ModPlusWindow>
 

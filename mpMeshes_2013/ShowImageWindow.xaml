@@ -1,15 +1,21 @@
-﻿<mpc:BaseMetroWindow x:Class="mpMeshes.ShowImageWindow"
+﻿<mps:ModPlusWindow x:Class="mpMeshes.ShowImageWindow"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       mc:Ignorable="d" 
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                       SizeToContent="WidthAndHeight"
-                      xmlns:mpc="clr-namespace:ModPlusAPI.Windows.Mpc;assembly=ModPlusAPI"
-                      ShowIconOnTitleBar="False"
+                      xmlns:mps="https://modplus.org/winfx/xaml/controls"
                       WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Grid Margin="2">
-        <Image Name="Img" Stretch="None" Margin="0,30,0,0"></Image>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ModPlusStyle;component/Styles/Controls.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Image Name="Img" Stretch="None"></Image>
     </Grid>
-</mpc:BaseMetroWindow>
+</mps:ModPlusWindow>
 
