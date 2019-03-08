@@ -4,20 +4,21 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{61645D23-6735-4C9F-AE61-C1F95CEADAFD}</ProjectGuid>
+    <ProjectGuid>{53A070FA-EB19-41C2-B3F7-F5E6D3C4861D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>mpMeshes</RootNamespace>
-    <AssemblyName>mpMeshes_2019</AssemblyName>
+    <AssemblyName>mpMeshes_2020</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;A2019</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;A2020</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -25,42 +26,21 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;A2019</DefineConstants>
+    <DefineConstants>TRACE;A2020</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="accoremgd">
-      <HintPath>C:\_Acad dlls\2019\accoremgd.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="acdbmgd">
-      <HintPath>C:\_Acad dlls\2019\acdbmgd.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="acmgd">
-      <HintPath>C:\_Acad dlls\2019\acmgd.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ModPlusAPI">
-      <HintPath>..\..\..\..\..\..\..\ModPlus\Extensions\ModPlusAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ModPlusStyle">
-      <HintPath>..\..\..\..\..\..\..\ModPlus\Extensions\ModPlusStyle.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ModPlus_2019">
-      <HintPath>..\..\..\..\..\..\..\ModPlus\Extensions\ModPlus_2019.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="..\mpMeshes_2013\ModPlusConnector.cs">
       <Link>ModPlusConnector.cs</Link>
@@ -78,28 +58,62 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="..\mpMeshes_2013\Resources\ГОСТ 23279-85_1.png">
+    <Resource Include="..\mpmeshes_2013\resources\mpMeshes_16x16.png">
+      <Link>Resources\mpMeshes_16x16.png</Link>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\mpmeshes_2013\resources\mpMeshes_16x16_dark.png">
+      <Link>Resources\mpMeshes_16x16_dark.png</Link>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\mpmeshes_2013\resources\mpMeshes_32x32.png">
+      <Link>Resources\mpMeshes_32x32.png</Link>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\mpmeshes_2013\resources\mpMeshes_32x32_dark.png">
+      <Link>Resources\mpMeshes_32x32_dark.png</Link>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\mpmeshes_2013\resources\ГОСТ 23279-85_1.png">
       <Link>Resources\ГОСТ 23279-85_1.png</Link>
     </Resource>
-    <Resource Include="..\mpMeshes_2013\Resources\ГОСТ 23279-85_2.png">
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\mpmeshes_2013\resources\ГОСТ 23279-85_2.png">
       <Link>Resources\ГОСТ 23279-85_2.png</Link>
     </Resource>
-    <Resource Include="..\mpMeshes_2013\Resources\ГОСТ 23279-85_3.png">
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\mpmeshes_2013\resources\ГОСТ 23279-85_3.png">
       <Link>Resources\ГОСТ 23279-85_3.png</Link>
     </Resource>
-    <Resource Include="..\mpMeshes_2013\Resources\ГОСТ 23279-85_4.png">
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\mpmeshes_2013\resources\ГОСТ 23279-85_4.png">
       <Link>Resources\ГОСТ 23279-85_4.png</Link>
     </Resource>
-    <Resource Include="..\mpMeshes_2013\Resources\ГОСТ 23279-85_5.png">
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\mpmeshes_2013\resources\ГОСТ 23279-85_5.png">
       <Link>Resources\ГОСТ 23279-85_5.png</Link>
     </Resource>
-    <Resource Include="..\mpMeshes_2013\Resources\ГОСТ 8478-81.png">
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\mpmeshes_2013\resources\ГОСТ 8478-81.png">
       <Link>Resources\ГОСТ 8478-81.png</Link>
     </Resource>
-    <Resource Include="..\mpMeshes_2013\Resources\Серия 1.410-3 в.1_1.png">
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\mpmeshes_2013\resources\Серия 1.410-3 в.1_1.png">
       <Link>Resources\Серия 1.410-3 в.1_1.png</Link>
     </Resource>
-    <Resource Include="..\mpMeshes_2013\Resources\Серия 1.410-3 в.1_2.png">
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\mpmeshes_2013\resources\Серия 1.410-3 в.1_2.png">
       <Link>Resources\Серия 1.410-3 в.1_2.png</Link>
     </Resource>
   </ItemGroup>
@@ -114,20 +128,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="..\mpMeshes_2013\Resources\mpMeshes_16x16.png">
-      <Link>Resources\mpMeshes_16x16.png</Link>
-    </Resource>
-    <Resource Include="..\mpMeshes_2013\Resources\mpMeshes_16x16_dark.png">
-      <Link>Resources\mpMeshes_16x16_dark.png</Link>
-    </Resource>
-    <Resource Include="..\mpMeshes_2013\Resources\mpMeshes_32x32.png">
-      <Link>Resources\mpMeshes_32x32.png</Link>
-    </Resource>
-    <Resource Include="..\mpMeshes_2013\Resources\mpMeshes_32x32_dark.png">
-      <Link>Resources\mpMeshes_32x32_dark.png</Link>
-    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

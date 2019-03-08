@@ -1057,7 +1057,7 @@ namespace mpMeshes
                         Source =
                             new BitmapImage(
                                 new Uri(
-                                    @"pack://application:,,,/mpMeshes_" + new Interface().AvailProductExternalVersion +
+                                    @"pack://application:,,,/mpMeshes_" + new ModPlusConnector().AvailProductExternalVersion +
                                     ";component/Resources/" + imagename + ".png", UriKind.Absolute))
                     }
                 };
@@ -1250,7 +1250,7 @@ namespace mpMeshes
                         Source =
                             new BitmapImage(
                                 new Uri(
-                                    @"pack://application:,,,/mpMeshes_" + new Interface().AvailProductExternalVersion +
+                                    @"pack://application:,,,/mpMeshes_" + new ModPlusConnector().AvailProductExternalVersion +
                                     ";component/Resources/" + imagename + ".png", UriKind.Absolute))
                     }
                 };
@@ -1609,7 +1609,7 @@ namespace mpMeshes
                         Source =
                             new BitmapImage(
                                 new Uri(
-                                    @"pack://application:,,,/mpMeshes_" + new Interface().AvailProductExternalVersion +
+                                    @"pack://application:,,,/mpMeshes_" + new ModPlusConnector().AvailProductExternalVersion +
                                     ";component/Resources/" + imagename + ".png", UriKind.Absolute))
                     }
                 };
@@ -1655,7 +1655,7 @@ namespace mpMeshes
         [CommandMethod("ModPlus", "mpMeshes", CommandFlags.Modal)]
         public void Main()
         {
-            Statistic.SendCommandStarting(new Interface());
+            Statistic.SendCommandStarting(new ModPlusConnector());
 
             if (_window == null)
             {

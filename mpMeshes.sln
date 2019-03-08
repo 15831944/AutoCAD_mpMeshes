@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mpMeshes_2018", "mpMeshes_2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mpMeshes_2019", "mpMeshes_2019\mpMeshes_2019.csproj", "{61645D23-6735-4C9F-AE61-C1F95CEADAFD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mpMeshes_2020", "mpMeshes_2020\mpMeshes_2020.csproj", "{53A070FA-EB19-41C2-B3F7-F5E6D3C4861D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{61645D23-6735-4C9F-AE61-C1F95CEADAFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61645D23-6735-4C9F-AE61-C1F95CEADAFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61645D23-6735-4C9F-AE61-C1F95CEADAFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53A070FA-EB19-41C2-B3F7-F5E6D3C4861D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53A070FA-EB19-41C2-B3F7-F5E6D3C4861D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53A070FA-EB19-41C2-B3F7-F5E6D3C4861D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53A070FA-EB19-41C2-B3F7-F5E6D3C4861D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
