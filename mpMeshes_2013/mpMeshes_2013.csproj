@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>$(SolutionDir)\ModPlus.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="accoremgd">
       <HintPath>C:\_Acad dlls\2013\accoremgd.dll</HintPath>
@@ -69,6 +72,8 @@
     <Compile Include="MpMeshes.xaml.cs">
       <DependentUpon>MpMeshes.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MpMeshesFunc.cs" />
+    <Compile Include="MpMeshesHelpFunc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShowImageWindow.xaml.cs">
       <DependentUpon>ShowImageWindow.xaml</DependentUpon>
@@ -113,6 +118,13 @@
     <Resource Include="Resources\mpMeshes_16x16_dark.png" />
     <Resource Include="Resources\mpMeshes_32x32.png" />
     <Resource Include="Resources\mpMeshes_32x32_dark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
