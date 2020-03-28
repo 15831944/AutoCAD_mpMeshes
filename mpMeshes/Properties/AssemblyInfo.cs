@@ -29,4 +29,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("2019")]
 #elif A2020
 [assembly: AssemblyDescription("2020")]
+#elif A2021
+[assembly: AssemblyDescription("2021")]
 #endif
